@@ -20,5 +20,5 @@ from DataDealApp.views import GetTest, GetTestasd
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', GetTest),
-    path('a/', GetTestasd)
+    path('a/', GetTestasd, name='a')
 ]

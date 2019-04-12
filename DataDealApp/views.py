@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -9,4 +10,4 @@ def GetTest(request):
 
 
 def GetTestasd(request):
-    return redirect('/?msg=未设置域名和服务器内容')
+    return JsonResponse({'b': '123'})
