@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <span id="asd"></span>
+        <button type="button" onclick="asd()">1223</button>
+    </div>
+</body>
+</html>
+<script>
+    function asd() {
+        $.ajax({
+            url: '/a/',
+            type: 'GET',
+            data: {
+
+            },
+            {#headers: {"X-CSRFToken": $.cookie('csrftoken')},#}
+            beforeSend: function () {
+                // 禁用按钮防止重复提交
+                {#$('#result').html('正在生成,请稍后......');#}
+            },
+            success: function (res) {
+                $('#asd').html(res.b);
+            }
+        })
+
+    }
+</script>
