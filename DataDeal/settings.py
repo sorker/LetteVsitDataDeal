@@ -25,7 +25,7 @@ SECRET_KEY = 'a79c8k&cc+&@0icw-&8wt-fl39r05iz%*z%g2gii2hkr&t(cv('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['sorke.f3322.net', '127.0.0.1']
 
 
 # Application definition

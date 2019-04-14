@@ -7,26 +7,29 @@
 <body>
 {% include 'base/js.html' %}
 <div>
-    <span id="asd">12</span>
-    <button type="button" onclick="asd()">1223</button>
+    <span id="asd">----》</span>
+    <button type="button" onclick="asd()">点一下试试</button>
 </div>
 </body>
 </html>
 <script type="application/javascript">
+    var a ;
     function asd() {
         $.ajax({
-            url: 'http://127.0.0.1:8888/a',
+            url: 'http://sorke.f3322.net:180/a',
             {#data: data,#}
             success: function (res) {
                 console.log(res.b);
                 if($('#asd').html() == '123'){
-                    $('#asd').html('12')
+                    $('#asd').html('成功获取')
                 }
                 else {
-                    $('#asd').html(res.b)
+                    $('#asd').html(res.b);
+                    a = res.b
                 }
             },
             dataType: "json"
         });
     }
+
 </script>
