@@ -14,6 +14,7 @@ django.setup()
 from DataDealApp.models import ComplaintRawData
 
 
-def sql_insert_complaintrawdata(title, content, reflecting_time, reply_unit, reply_time, reply_opinion):
-    ComplaintRawData.objects.create(title=title, content=content, reflecting_time=reflecting_time, reply_unit=reply_unit
-                                    , reply_time=reply_time, reply_opinion=reply_opinion)
+def sql_insert_complaintrawdata(title, content, reflecting_time, reply_unit, reply_time, reply_opinion, city, area):
+    ComplaintRawData.objects.get_or_create(title=title, content=content, reflecting_time=reflecting_time,
+                                           reply_unit=reply_unit, reply_time=reply_time, reply_opinion=reply_opinion,
+                                           city=city, city_area=area)
