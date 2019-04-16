@@ -23,5 +23,6 @@ def select_city_area():
     return all_city
 
 
+
 if __name__ == '__main__':
     print(select_city_area())
