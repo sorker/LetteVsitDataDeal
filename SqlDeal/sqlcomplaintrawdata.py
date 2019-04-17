@@ -19,8 +19,11 @@ def sql_insert_complaintrawdata(title, content, reflecting_time, reply_unit, rep
                                            reply_unit=reply_unit, reply_time=reply_time, reply_opinion=reply_opinion,
                                            city=city, city_area=area)
 
+
 def sql_selete_title():
-    title = ComplaintRawData.objects.values_list('title', flat=True)
+    title = ComplaintRawData.objects.values_list('title')
+    return title
 
 
-print(sql_selete_title())
+if __name__ == '__main__':
+    print(sql_selete_title())

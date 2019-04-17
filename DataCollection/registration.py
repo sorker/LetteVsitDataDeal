@@ -136,9 +136,9 @@ class Registeration:
             except Exception as e:
                 print('next_area: ', e)
                 continue
-            if id == 10:
-                break
-        # drive.close()
+            # if id == 10:
+            #     break
+        drive.close()
 
 
 drive = chromedriver.driver()
