@@ -5,7 +5,7 @@ Desc: 获取原始网页数据
 Product: PyCharm  
 """
 
-from WebDriver.chromedriverOption import chromedriver
+from ConDriver.chromedriverOption import chromedriver
 from config import URL, ELEMENT_CLICK_ORDER, ELEMENT_TITLE_CONTENT
 import re
 from time import sleep

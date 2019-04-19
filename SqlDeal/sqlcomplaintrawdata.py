@@ -21,7 +21,7 @@ def sql_insert_complaintrawdata(title, content, reflecting_time, reply_unit, rep
 
 
 def sql_selete_title():
-    title = ComplaintRawData.objects.values_list('title')
+    title = ComplaintRawData.objects.values_list('content')
     return title
 
 
