@@ -9,21 +9,21 @@ from selenium import webdriver
 from config import URL, URL_TEST
 
 
-class ChromeDriver():
-    def driver(self):
+class ChromeDriver:
+    @staticmethod
+    def driver():
         chromedriver = webdriver.Chrome()
         return chromedriver
 
-    def driver_options(self):
+    @staticmethod
+    def driver_options():
         options = webdriver.ChromeOptions()
         options.headless = True
         chromedriver = webdriver.Chrome(options=options)
         return chromedriver
 
 
-chromedriver = ChromeDriver()
-
 if __name__ == '__main__':
     # driver = chromedriver.driver()
-    driver = chromedriver.driver_options()
+    driver = ChromeDriver.driver_options()
     driver.get(URL_TEST)

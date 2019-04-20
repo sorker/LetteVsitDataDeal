@@ -5,7 +5,7 @@ Desc: 获取原始网页数据
 Product: PyCharm  
 """
 
-from ConDriver.chromedriverOption import chromedriver
+from ConDriver.chromedriverOption import ChromeDriver
 from config import URL, ELEMENT_CLICK_ORDER, ELEMENT_TITLE_CONTENT
 import re
 from time import sleep
@@ -14,8 +14,8 @@ from SqlDeal.sqlcityarea import select_city_area
 
 
 class Registeration:
-    def __init__(self, driver):
-        self.driver = driver
+    def __init__(self):
+        self.driver = ChromeDriver.driver()
 
     def click_time(self):  # 按顺序点击
         for by, vlaue in ELEMENT_CLICK_ORDER.items():
@@ -138,11 +138,10 @@ class Registeration:
                 continue
             # if id == 10:
             #     break
-        drive.close()
+        self.driver.close()
 
 
-drive = chromedriver.driver()
-registeration = Registeration(drive)
+registeration = Registeration()
 
 if __name__ == '__main__':
     # driver_options = chromedriver.driver_options()
