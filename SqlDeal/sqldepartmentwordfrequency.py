@@ -15,4 +15,14 @@ from DataDealApp.models import DepartmentWordFrequency
 
 
 def insert_department_word_frequency(department, word, frequency):
-    DepartmentWordFrequency.objects.get_or_create(department, word, frequency)
+    word = ','.join(word)
+    frequency = ','.join(frequency)
+    DepartmentWordFrequency.objects.get_or_create(department=department, word=word, frequency=frequency)
+
+
+def select_all_department_word_frequency():
+    return DepartmentWordFrequency.objects.all().order_by('department').values_list('department', 'word', 'frequency')
+
+
+if __name__ in "__main__":
+    print(select_all_department_word_frequency())

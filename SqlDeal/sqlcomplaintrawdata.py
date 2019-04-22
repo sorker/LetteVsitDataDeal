@@ -26,8 +26,8 @@ def sql_select_title():
 
 
 def sql_select_department_content():
-    content_department = ComplaintRawData.objects.filter(read_times=True).values_list('content', 'reply_unit')
-    ComplaintRawData.objects.filter(read_times=True).update(read_times=False)
+    content_department = ComplaintRawData.objects.filter(read_times=False).values_list('content', 'reply_unit')
+    # ComplaintRawData.objects.filter(read_times=True).update(read_times=False)
     return content_department
 
 

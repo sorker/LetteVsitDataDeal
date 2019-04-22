@@ -42,3 +42,8 @@ class DepartmentWordFrequency(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class ContextWordFrequency(models.Model):
+    complaint_raw_data_id = models.IntegerField(u'原始数据的ID')
+    word = models.CharField(u'分词', max_length=2000)

@@ -23,7 +23,7 @@ class RedisDriver:
         :param frequency: 词频
         :return:
         """
-        self.driver().set(name_value, frequency, nx, xx)
+        self.driver().set(name_value, frequency, nx=nx, xx=xx)
 
     def department_fre_get(self, name_value):
         """
@@ -46,10 +46,17 @@ class RedisDriver:
 redisdriver = RedisDriver()
 
 if __name__ == "__main__":
-    redisdriver.driver().set('asd', 'asf')
     redisdriver.driver().set('123', '122')
-    keys = redisdriver.driver().keys()
-    for key in keys:
-        print(key.decode())
+    # keys = redisdriver.driver().keys()
+    # for key in keys:
+    #     if key.decode() == '123':
+    #         redisdriver.department_fre_get(key)
+    #         print('=========================================================================')
+    #         print('=========================================================================')
+    #         print('=========================================================================')
+    #         print('=========================================================================')
+        # print(key.decode())
         # print(str(key).split('\'')[1])
-    # print(redisdriver.driver().get('123'))
+    print(redisdriver.department_fre_get(b'123'))
+    redisdriver.driver().delete(b'123')
+    redisdriver.driver().delete(b'asd')
