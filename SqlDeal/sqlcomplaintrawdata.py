@@ -31,5 +31,12 @@ def sql_select_department_content():
     return content_department
 
 
+def sql_select_id_department_content():
+    content_department = ComplaintRawData.objects.filter(read_times=False).order_by('reply_unit').values_list('id', 'content', 'reply_unit')
+    # print(len(content_department))
+    # ComplaintRawData.objects.filter(read_times=True).update(read_times=False)
+    return content_department
+
+
 if __name__ == '__main__':
-    print(sql_select_department_content())
+    print(sql_select_id_department_content())

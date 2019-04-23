@@ -1,9 +1,11 @@
 from urllib import request, error, parse
-from SqlDeal.sqlcomplaintrawdata import sql_select_title, sql_select_department_content
-from SqlDeal.sqldepartmentwordfrequency import insert_department_word_frequency,select_all_department_word_frequency
+from SqlDeal.sqlcomplaintrawdata import sql_select_title, sql_select_department_content, \
+    sql_select_id_department_content
+from SqlDeal.sqlwordfrequency import insert_department_word_frequency, select_all_department_word_frequency, insert_id_word_frequency
 from ConDriver.redisdriver import redisdriver
 import cpca
 import jieba
+from jieba import analyse
 
 rabbit = [',', '.', '/', '，', '。', '、', '*', '（', '）', '？', '：', '”', '“！', '了', '你', '我', '他', '你们', '我们', '他们', '吗',
           '不']
@@ -49,14 +51,14 @@ def get_context_out_text():
                 # if redisdriver.key_exists(name_value) == 0:
                 redisdriver.department_fre_set(name_value, 1, nx=True)  # 部门：词不存在是加入redis，计数一 nx=True
                 # else:
-                    # n = int(redisdriver.department_fre_get(name_value)) + 1
-                    # print(n)
+                # n = int(redisdriver.department_fre_get(name_value)) + 1
+                # print(n)
                 redisdriver.department_fre_set(name_value, int(redisdriver.department_fre_get(name_value)) + 1,
                                                xx=True)
                 # 部门：词存在时，计数加一 xx=True
     keys = redisdriver.keys_get()  # 获取所有redis中的key
-    words = []  # 用来存放词
-    frequencys = []  # 用来存放词频
+    words = ''  # 用来存放词
+    frequencys = ''  # 用来存放词频
     department = ''
     for key in keys:
         department_word = key.decode().split(':')  # 把部门和词分开
@@ -64,19 +66,18 @@ def get_context_out_text():
         # print(department_word, ' ', frequency)
         if department == '':  # 如果部门为空
             department = department_word[0]  # 把部门写入
-            words.append(department_word[1])  # 把词写入
-            frequencys.append(redisdriver.department_fre_get(key).decode())  # 把词频写入
+            words = department_word[1]  # 把词写入
+            frequencys = redisdriver.department_fre_get(key).decode()  # 把词频写入
         elif department == department_word[0]:  # 如果当前写入部门与当前部门相同
-            words.append(department_word[1])
-            frequencys.append(redisdriver.department_fre_get(key).decode())
+            words = words + ',' + department_word[1]
+            frequencys = frequencys + ',' + redisdriver.department_fre_get(key).decode()
         else:  # 如果当前写入部门与当前部门不相同
             insert_department_word_frequency(department=department, word=words, frequency=frequencys)  # 把部门、词、词频写入数据库
-            words = []  # 初始化
-            frequencys = []  # 初始化
             department = department_word[0]
-            words.append(department_word[1])
-            frequencys.append(redisdriver.department_fre_get(key).decode())
+            words = department_word[1]  # 把词写入
+            frequencys = redisdriver.department_fre_get(key).decode()  # 把词频写入
     print('第一次数据处理完成')
+
 
 def deal_department_word_frequecy():
     file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
@@ -90,7 +91,7 @@ def deal_department_word_frequecy():
             words = word
             frequencys = frequency
         elif department != departments:
-            str = departments, '===', words, '===', frequencys, '\n'
+            strs = departments, '===', words, '===', frequencys, '\n'
             file.writelines(str)
             # insert_department_word_frequency(departments, words, frequencys)
             # print(departments, '===', words, '===', frequencys)
@@ -102,6 +103,51 @@ def deal_department_word_frequecy():
             frequencys = frequencys + ',' + frequency
     print('第二次书数据处理完成')
 
+
+def all_words_weight():
+    file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
+    id_department_content = sql_select_id_department_content()
+    for id, content, department in id_department_content:
+        keywords, weights = '', ''
+        for keyword, weight in analyse.textrank(content, topK=30,  withWeight=True):
+            keywords += keyword + ','
+            weights += str(weight) + ','
+        strs = str(id), '\t', department, '\t', keywords, '\t', weights, '\n'
+        file.writelines(strs)
+        insert_id_word_frequency(id=id, word=keywords, frequercy=weights)
+    print('每条数据的词权重')
+
+
+def all_department_weight():
+    file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
+    id_department_content = sql_select_id_department_content()
+    contents = ''
+    departments = ''
+    ids = 1
+    for id, content, department in id_department_content:
+        if departments == '':
+            departments = department
+            contents = content
+        elif departments == department:
+            contents += ',' + content
+        else:
+            keywords, weights = '', ''
+            for keyword, weight in analyse.textrank(contents, topK=30, withWeight=True):
+                keywords += keyword + ','
+                weights += str(weight) + ','
+            strs = str(ids), '\t', departments, '\t', keywords, '\t', weights, '\n'
+            insert_department_word_frequency(department=departments, word=keywords, frequency=weights)
+            # print(strs)
+            file.writelines(strs)
+            departments = department
+            contents = content
+            ids += 1
+    print('每个部门的词权重')
+
+
+
+
+
 if __name__ == "__main__":
-    get_context_out_text()
-    deal_department_word_frequecy()
+    all_department_weight()
+    # all_words_weight()
