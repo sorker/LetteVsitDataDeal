@@ -25,6 +25,14 @@ class RedisDriver:
         """
         self.driver().set(name_value, frequency, nx=nx, xx=xx)
 
+    def city_area_department(self, name_value, department, nx=False, xx=False):
+        """
+        :param name_value: 部门名.词
+        :param frequency: 词频
+        :return:
+        """
+        self.driver().set(name_value, department, nx=nx, xx=xx)
+
     def department_fre_get(self, name_value):
         """
         :param name_value: 部门名.词

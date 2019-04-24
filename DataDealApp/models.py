@@ -36,7 +36,7 @@ class CityArea(models.Model):
 
 
 class DepartmentWordFrequency(models.Model):  # 部门的词频
-    department = models.CharField(u'部门', max_length=20)
+    department = models.CharField(u'部门', max_length=20, primary_key=True)
     word = models.CharField(u'词', max_length=10000)
     frequency = models.CharField(u'频率', max_length=3000)
 
@@ -48,3 +48,9 @@ class ContextWordFrequency(models.Model):   # 每条数据的词频，用来验�
     complaint_raw_data_id = models.IntegerField(u'原始数据的ID')
     word = models.CharField(u'分词', max_length=2000)
     frequency = models.CharField(u'频率', max_length=3000)
+
+
+class CityAreaDepartment(models.Model):   # 每条数据的词频，用来验证
+    city = models.CharField(u'城市', max_length=20)
+    city_area = models.CharField(u'地区', max_length=20)
+    department = models.CharField(u'部门', max_length=30)

@@ -7,9 +7,6 @@ import cpca
 import jieba
 from jieba import analyse
 
-rabbit = [',', '.', '/', '，', '。', '、', '*', '（', '）', '？', '：', '”', '“！', '了', '你', '我', '他', '你们', '我们', '他们', '吗',
-          '不']
-
 
 def get_area_in_txt():
     # 获取网页内容
@@ -39,11 +36,12 @@ def get_area_out_txt():
 
 def get_context_out_text():
     # file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
+    words = open('../data/停用词表.txt', 'r', encoding='utf-8').readlines()
     contexts = sql_select_department_content()  # 读取数据库中的部门和提问内容
     for context in contexts:
         seg_list = jieba.cut_for_search(context[0])  # 分词
         for seg in seg_list:
-            if seg in rabbit:
+            if seg in words:
                 continue
             else:
                 name_value = ':'.join([context[1], seg])
@@ -143,9 +141,6 @@ def all_department_weight():
             contents = content
             ids += 1
     print('每个部门的词权重')
-
-
-
 
 
 if __name__ == "__main__":

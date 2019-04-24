@@ -60,7 +60,11 @@ class Registeration:
             # 按标题获取元素组
             elements[title_count].click()  # 按重复顺序选择元素点击
             self.driver.switch_to.frame('layui-layer-iframe' + str(i))
-            span_elements = self.driver.find_elements_by_tag_name('span')
+            try:
+                span_elements = self.driver.find_elements_by_tag_name('span')
+            except Exception as e:
+                print('frame:', e)
+                self.driver.refresh()
             if len(title) > 100:
                 title[0:99]
             content.append(title)
@@ -75,8 +79,10 @@ class Registeration:
             try:
                 self.driver.find_element_by_xpath('//span[@class="layui-layer-setwin"]/a').click()
             except Exception:
+                self.driver.refresh()
                 pass
             print('click_title_switch_ifarme: ', e)
+            self.driver.refresh()
             pass
         return content
 
@@ -92,6 +98,7 @@ class Registeration:
                 content = self.click_title_switch_ifarme(title[0], title[1], k + 1)
             except Exception as e:
                 print('loop_titles：', e)
+                self.driver.refresh()
                 continue
             contents.append(content)
         return contents
@@ -122,7 +129,9 @@ class Registeration:
         """
         self.driver.get(URL)
         self.click_time()
-        for id, city, area in select_city_area():
+        city_areas = []
+        city_area = select_city_area()
+        for id, city, area in city_area:
             # print(id, city, area)
             try:
                 print(city, ', ', area)
@@ -134,8 +143,11 @@ class Registeration:
                 sleep(1)
                 self.next_page(city, area)
             except Exception as e:
+                self.driver.refresh()
                 print('next_area: ', e)
+                city_areas.append([city, area])
                 continue
+        print(city_areas)
             # if id == 10:
             #     break
         self.driver.close()
