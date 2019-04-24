@@ -11,7 +11,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DataDeal.settings')
 django.setup()
 
-from DataDealApp.models import ComplaintRawData
+from DataDealApp.models import ComplaintRawData, Classification
 
 
 def sql_insert_complaintrawdata(title, content, reflecting_time, reply_unit, reply_time, reply_opinion, city, area):
@@ -21,9 +21,13 @@ def sql_insert_complaintrawdata(title, content, reflecting_time, reply_unit, rep
 
 
 def sql_select_title():
-    title = ComplaintRawData.objects.values_list('title')
+    title = ComplaintRawData.objects.filter(read_times=True).values_list('title')
     return title
 
+
+def sql_select_id_title():
+    id_title = ComplaintRawData.objects.filter(read_times=True).values_list('id', 'title')
+    return id_title
 
 def sql_select_department_content():
     content_department = ComplaintRawData.objects.filter(read_times=False).values_list('content', 'reply_unit')
@@ -43,6 +47,10 @@ def sql_select_city_area_department():
     city_area_department = ComplaintRawData.objects.filter(read_times=True)\
         .values_list('city', 'city_area', 'reply_unit')
     return city_area_department
+
+
+def sql_insert_id_classification(id, classification):
+    Classification.objects.get_or_create(complaint_raw_data_id=id, classification=classification)
 
 
 if __name__ == '__main__':

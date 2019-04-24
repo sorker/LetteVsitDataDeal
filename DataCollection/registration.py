@@ -122,7 +122,7 @@ class Registeration:
                 print('next_page: ', e)
                 continue
 
-    def next_area(self):
+    def next_area(self, city_area=[]):
         """
         :desc: 循环获取每个地点的数据
         :return:
@@ -130,27 +130,31 @@ class Registeration:
         self.driver.get(URL)
         self.click_time()
         city_areas = []
-        city_area = select_city_area()
+        if len(city_area) == 0:
+            city_area = select_city_area()
         for id, city, area in city_area:
             # print(id, city, area)
             try:
-                print(city, ', ', area)
-                self.driver.find_element_by_id('city').send_keys(city)
-                sleep(1)
-                self.driver.find_element_by_id('county').send_keys(area)
-                sleep(1)
-                self.driver.find_element_by_class_name('getSmsCode2').click()
-                sleep(1)
-                self.next_page(city, area)
+                self.browser_event(city, area)
             except Exception as e:
                 self.driver.refresh()
                 print('next_area: ', e)
                 city_areas.append([city, area])
                 continue
         print(city_areas)
-            # if id == 10:
-            #     break
+        if len(city_areas) != 0:
+            self.next_area(city_areas)
         self.driver.close()
+
+    def browser_event(self, city, area):
+        print(city, ', ', area)
+        self.driver.find_element_by_id('city').send_keys(city)
+        sleep(1)
+        self.driver.find_element_by_id('county').send_keys(area)
+        sleep(1)
+        self.driver.find_element_by_class_name('getSmsCode2').click()
+        sleep(1)
+        self.next_page(city, area)
 
 
 registeration = Registeration()

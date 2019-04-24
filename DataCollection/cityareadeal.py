@@ -10,6 +10,10 @@ from SqlDeal.sqlcomplaintrawdata import sql_select_city_area_department
 
 
 def city_area():
+    """
+    浙江省城市、区整理
+    :return:
+    """
     filename = '../data/city_area.txt'
     file = open(filename, mode='r')
     text = file.readlines()
@@ -32,6 +36,10 @@ def city_area():
 
 
 def city_area_department():
+    """
+    浙江省城市、区下的行政部门整理
+    :return:
+    """
     city_area_department = sql_select_city_area_department()
     for city, area, department in city_area_department:
         insert_city_area_department(city, area, department)
