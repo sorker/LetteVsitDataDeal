@@ -58,5 +58,9 @@ class CityAreaDepartment(models.Model):   # 每条数据的词频，用来验证
 
 class Classification(models.Model):   # 每条数据的词频，用来验证
     complaint_raw_data_id = models.IntegerField(u'原始数据的ID', primary_key=True)
-    classification = models.CharField(u'地区', max_length=20)
+    classification = models.CharField(u'类别', max_length=20)
 
+
+class ClassificationFrequency(models.Model):   # 每条数据的词频，用来验证
+    classification = models.CharField(u'类别', primary_key=True)
+    frequency = models.CharField(u'数量', max_length=20)
