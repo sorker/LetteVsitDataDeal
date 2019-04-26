@@ -11,7 +11,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DataDeal.settings')
 django.setup()
 
-from DataDealApp.models import ComplaintRawData
+from DataDealApp.models import ComplaintRawData, ClassificationWeight
 
 
 def sql_insert_complaintrawdata(title, content, reflecting_time, reply_unit, reply_time, reply_opinion, city, area):
@@ -25,9 +25,14 @@ def sql_select_title():
     return title
 
 
-def sql_select_title_context():
-    id_title = ComplaintRawData.objects.filter(read_times=True).values_list('title', 'context')
-    return id_title
+def sql_select_classification_context():
+    sql_content_departments = ComplaintRawData.objects.filter(read_times=True).exclude(
+        contextwordfrequency__classification=None).select_related('contextwordfrequency')
+    content_departments = []
+    for content_department in sql_content_departments:
+        content_departments.append([content_department.contextwordfrequency.classification, content_department.content])
+    return content_departments
+
 
 
 def sql_select_department_content():
@@ -58,6 +63,14 @@ def sql_select_city_area_department():
     return city_area_department
 
 
+def sql_insert_classification_weight(classification, number, words, weight):
+    ClassificationWeight.objects.get_or_create(classification=classification, number=number, words=words, weight=weight)
+
+
 if __name__ == '__main__':
-    print(sql_select_city_area_department())
+    print(sql_select_classification_context()[6])
+    print(sql_select_classification_context()[7])
+    print(sql_select_classification_context()[8])
+    print(sql_select_classification_context()[9])
+    print(sql_select_classification_context()[10])
     # ComplaintRawData.objects.filter(read_times=False).update(read_times=True)

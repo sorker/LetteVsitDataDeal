@@ -1,12 +1,15 @@
 # -*- coding:utf-8 -*-
 from urllib import request, error, parse
 from SqlDeal.sqlcomplaintrawdata import sql_select_title, sql_select_department_content, \
-    sql_select_id_department_content, sql_select_id_title_department_content, sql_select_title_context
-from SqlDeal.sqlwordfrequency import insert_department_word_frequency, select_all_department_word_frequency, insert_id_word_frequency
+    sql_select_id_department_content, sql_select_id_title_department_content, sql_select_classification_context, \
+    sql_insert_classification_weight
+from SqlDeal.sqlwordfrequency import insert_department_word_frequency, select_all_department_word_frequency, \
+    insert_id_word_frequency
 from ConDriver.redisdriver import redisdriver
 import cpca
 import jieba
 from jieba import analyse
+from ConDriver.redisdriver import redisdriver
 import pandas as pd
 
 
@@ -104,7 +107,7 @@ def deal_department_word_frequecy():
     print('第二次书数据处理完成')
 
 
-def all_words_weight():
+def all_classification_words_frequencys():
     context_percent_file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
     stop_words = open('../data/停用词表.txt', mode='r+', encoding='utf-8').read()
     class_file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
@@ -170,43 +173,39 @@ def all_department_weight():
 
 
 def all_classification_weight():
+    for a in redisdriver.keys_get():  # 清理redis
+        redisdriver.driver().delete(a)
     stop_words = open('../data/停用词表.txt', mode='r+', encoding='utf-8').read()
-    class_file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
-    title_context = sql_select_title_context()
-    categorys = []
-    for title, content in title_context:
-        segments = {}
-        # keywords = ''
-        for keyword in jieba.cut(content):
-            word = keyword.replace(' ', '')
-            if word not in stop_words and not keyword.isdigit():
-                if word not in segments:
-                    segments[word] = 1
-                else:
-                    segments[word] += 1
-                # keywords += word + '，'
-        # print(segments)
-        classification = None
-        if '<' in title:
-            classification = title.split('<')[1].split('>')[0]
-            if classification not in categorys:
-                categorys.append(classification)
-        keywords, frequencys = '', ''
-        for keyword, frequency in segments.items():
-            keywords += keyword + ','
-            frequencys += str(frequency) + ','
-        if classification is None:
-            strs = str(id), '\t', '===', '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
+    class_file = open('../data/deal/class.txt', 'r+', encoding='utf-8')
+    title_context = sql_select_classification_context()
+    categorys = {}
+    for classification, context in title_context:
+        if classification is not None:
+            # print(classification)
+            exist = redisdriver.key_exists(classification)
+            # print(exist)
+            if exist == 0:
+                categorys[classification] = 1
+                redisdriver.classification_weight_set(classification, context)
+            elif exist == 1:
+                categorys[classification] += 1
+                context += redisdriver.value_get(classification).decode()
+                # print(redisdriver.value_get(classification).decode())
+                redisdriver.classification_weight_set(classification, context)
         else:
-            strs = str(id), '\t', classification, '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
-        # print(strs)
-        context_percent_file.writelines(strs)
-        insert_id_word_frequency(id=id, classification=classification, word=keywords, frequercy=frequencys)
-    for category in categorys:
-        class_file.writelines(category + '\n')
+            continue
+    for b in redisdriver.keys_get():
+        one_classification = b.decode()
+        all_classification_context = redisdriver.value_get(b).decode()
+        keywords, weights = '', ''
+        for keyword, weight in analyse.textrank(all_classification_context, topK=500, withWeight=True):
+            keywords += keyword + ','
+            weights += str(weight)[:8] + ','
+        sql_insert_classification_weight(one_classification, categorys[one_classification], keywords, weights)
     print('类别、数量、词、 权重')
 
 
 if __name__ == "__main__":
     # all_words_weight()
-    all_department_weight()
+    all_classification_weight()
+    # all_department_weight()

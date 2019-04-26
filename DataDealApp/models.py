@@ -37,7 +37,7 @@ class CityArea(models.Model):
 
 
 class DepartmentWordFrequency(models.Model):  # 部门的词频
-    department = models.CharField(u'部门', max_length=20, primary_key=True)
+    department = models.CharField(u'部门', max_length=50)
     word = models.CharField(u'词', max_length=10000)
     frequency = models.CharField(u'频率', max_length=3000)
 
@@ -65,11 +65,11 @@ class CityAreaDepartment(models.Model):   # 地点库
         return str(self.id)
 
 
-class ClassificationFrequency(models.Model):   # 类别权重
+class ClassificationWeight(models.Model):   # 类别权重
     classification = models.CharField(u'类别', primary_key=True, max_length=20)
     number = models.IntegerField(u'数量')
     words = models.CharField(u'分词', max_length=3000)
-    weight = models.CharField(u'权重', max_length=3000)
+    weight = models.CharField(u'权重', max_length=5000)
 
     def __str__(self):
         return str(self.id)

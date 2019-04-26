@@ -17,13 +17,21 @@ class RedisDriver:
     def driver(self):
         return self.CON
 
-    def department_fre_set(self, name_value, frequency, nx=False, xx=False):
+    def department_fre_set(self, name_value, frequency, ex=3, px=None, nx=False, xx=False):
         """
         :param name_value: 部门名.词
         :param frequency: 词频
         :return:
         """
-        self.driver().set(name_value, frequency, nx=nx, xx=xx)
+        self.driver().set(name_value, frequency, ex=ex, px=px, nx=nx, xx=xx)
+
+    def classification_weight_set(self, classification, context, nx=False, xx=False):
+        """
+        :param name_value: 部门名.词
+        :param frequency: 词频
+        :return:
+        """
+        self.driver().set(classification, context, nx=nx, xx=xx)
 
     def city_area_department(self, name_value, department, nx=False, xx=False):
         """
@@ -33,7 +41,7 @@ class RedisDriver:
         """
         self.driver().set(name_value, department, nx=nx, xx=xx)
 
-    def department_fre_get(self, name_value):
+    def value_get(self, name_value):
         """
         :param name_value: 部门名.词
         :return frequency 频率
@@ -54,7 +62,7 @@ class RedisDriver:
 redisdriver = RedisDriver()
 
 if __name__ == "__main__":
-    redisdriver.driver().set('123', '122')
+    # redisdriver.driver().set('123', '122')
     # keys = redisdriver.driver().keys()
     # for key in keys:
     #     if key.decode() == '123':
@@ -65,6 +73,8 @@ if __name__ == "__main__":
     #         print('=========================================================================')
         # print(key.decode())
         # print(str(key).split('\'')[1])
-    print(redisdriver.department_fre_get(b'123'))
-    redisdriver.driver().delete(b'123')
-    redisdriver.driver().delete(b'asd')
+    # print(redisdriver.value_get(b'123'))
+    # redisdriver.driver().delete(b'123')
+    # redisdriver.driver().delete(b'asd')
+    for a in redisdriver.keys_get():
+        redisdriver.driver().delete(a)
