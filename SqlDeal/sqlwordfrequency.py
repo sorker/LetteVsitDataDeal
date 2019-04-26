@@ -22,8 +22,9 @@ def select_all_department_word_frequency():
     return DepartmentWordFrequency.objects.all().order_by('department').values_list('department', 'word', 'frequency')
 
 
-def insert_id_word_frequency(id, word, frequercy):
-    ContextWordFrequency.objects.get_or_create(complaint_raw_data_id=id, word=word, frequency=frequercy)
+def insert_id_word_frequency(id, classification, word, frequercy):
+    ContextWordFrequency.objects.get_or_create(classification=classification, word=word, frequency=frequercy,
+                                               complaint_raw_data_id=id)
 
 
 if __name__ in "__main__":

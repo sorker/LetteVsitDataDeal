@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from django.db import models
 
 # Create your models here.
@@ -45,24 +46,30 @@ class DepartmentWordFrequency(models.Model):  # 部门的词频
 
 
 class ContextWordFrequency(models.Model):   # 每条数据的词频，用来验证
-    complaint_raw_data_id = models.IntegerField(u'原始数据的ID', primary_key=True)
+    classification = models.CharField(u'类别', max_length=20, null=True)
     word = models.CharField(u'分词', max_length=2000)
-    frequency = models.CharField(u'频率', max_length=3000)
+    frequency = models.CharField(u'分词频率', max_length=3000)
+    suitability = models.CharField(u'匹配度', max_length=5, null=True)  # SUM(词频*权重)
+    complaint_raw_data = models.OneToOneField('ComplaintRawData', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id)
 
 
-class CityAreaDepartment(models.Model):   # 每条数据的词频，用来验证
+class CityAreaDepartment(models.Model):   # 地点库
     city = models.CharField(u'城市', max_length=20)
     city_area = models.CharField(u'地区', max_length=20)
     department = models.CharField(u'部门', max_length=30)
 
-
-class Classification(models.Model):   # 每条数据的词频，用来验证
-    complaint_raw_data_id = models.IntegerField(u'原始数据的ID', primary_key=True)
-    classification = models.CharField(u'类别', max_length=20)
+    def __str__(self):
+        return str(self.id)
 
 
-class ClassificationFrequency(models.Model):   # 每条数据的词频，用来验证
+class ClassificationFrequency(models.Model):   # 类别权重
     classification = models.CharField(u'类别', primary_key=True, max_length=20)
     frequency = models.IntegerField(u'数量')
     words = models.CharField(u'分词', max_length=3000)
     weight = models.CharField(u'权重', max_length=3000)
+
+    def __str__(self):
+        return str(self.id)

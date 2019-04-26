@@ -1,11 +1,13 @@
+# -*- coding:utf-8 -*-
 from urllib import request, error, parse
 from SqlDeal.sqlcomplaintrawdata import sql_select_title, sql_select_department_content, \
-    sql_select_id_department_content
+    sql_select_id_department_content, sql_select_id_title_department_content
 from SqlDeal.sqlwordfrequency import insert_department_word_frequency, select_all_department_word_frequency, insert_id_word_frequency
 from ConDriver.redisdriver import redisdriver
 import cpca
 import jieba
 from jieba import analyse
+import pandas as pd
 
 
 def get_area_in_txt():
@@ -103,17 +105,38 @@ def deal_department_word_frequecy():
 
 
 def all_words_weight():
-    file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
-    id_department_content = sql_select_id_department_content()
-    for id, content, department in id_department_content:
-        keywords, weights = '', ''
-        for keyword, weight in analyse.textrank(content, topK=30,  withWeight=True):
+    context_percent_file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
+    stop_words = open('../data/停用词表.txt', mode='w+', encoding='utf-8').readlines()
+    class_file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
+    id_title_department_content = sql_select_id_title_department_content()[:10]
+    categorys = []
+    for id, title, content, department in id_title_department_content:
+        segments = []
+        for keyword in analyse.textrank(content, topK=50,  withWeight=False, allowPOS=('ns', 'n', 'vn', 'v')):
+            word = keyword.replace(' ', '')
+            if word not in stop_words:
+                segments.append({'word': word, 'count': 1})
+                # keywords += word + '，'
+        print(segments)
+        if '<' in title:
+            classification = title.split('<')[1].split('>')[0]
+            if classification not in categorys:
+                categorys.append(classification)
+        else:
+            continue
+        dfSg = pd.DataFrame(segments)
+        dfwords = dfSg.groupby('word')['count'].sum()
+        keywords, frequencys = '', ''
+        for keyword, frequency in dfwords.item():
             keywords += keyword + ','
-            weights += str(weight) + ','
-        strs = str(id), '\t', department, '\t', keywords, '\t', weights, '\n'
-        file.writelines(strs)
-        insert_id_word_frequency(id=id, word=keywords, frequercy=weights)
-    print('每条数据的词权重')
+            frequencys += str(frequency) + ','
+        strs = str(id), '\t', classification, '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
+        print(strs)
+        context_percent_file.writelines(strs)
+        # insert_id_word_frequency(id=id, classification=classification, word=keywords, frequercy=dfwords)
+    for category in categorys:
+        class_file.writelines(category + '\n')
+    print('每条数据的类别、词、频率')
 
 
 def all_department_weight():
@@ -144,5 +167,5 @@ def all_department_weight():
 
 
 if __name__ == "__main__":
-    all_department_weight()
+    all_words_weight()
     # all_words_weight()

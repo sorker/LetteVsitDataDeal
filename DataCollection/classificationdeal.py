@@ -7,17 +7,19 @@
 """
 from SqlDeal.sqlcomplaintrawdata import sql_insert_id_classification, sql_select_id_title
 
-file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
-categorys = []
 
-for id, title in sql_select_id_title():
-    if '<' in title:
-        classification = title.split('<')[1].split('>')[0]
-        sql_insert_id_classification(id=id, classification=classification)
-        if classification not in categorys:
-            categorys.append(classification)
-    else:
-        continue
+def sort_classification():
+    class_file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
+    categorys = []
 
-for category in categorys:
-    file.writelines(category + '\n')
+    for id, title in sql_select_id_title():
+        if '<' in title:
+            classification = title.split('<')[1].split('>')[0]
+            sql_insert_id_classification(id=id, classification=classification)
+            if classification not in categorys:
+                categorys.append(classification)
+        else:
+            continue
+
+    for category in categorys:
+        class_file.writelines(category + '\n')

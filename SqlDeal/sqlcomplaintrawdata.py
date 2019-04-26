@@ -11,7 +11,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DataDeal.settings')
 django.setup()
 
-from DataDealApp.models import ComplaintRawData, Classification
+from DataDealApp.models import ComplaintRawData
 
 
 def sql_insert_complaintrawdata(title, content, reflecting_time, reply_unit, reply_time, reply_opinion, city, area):
@@ -29,6 +29,8 @@ def sql_select_id_title():
     id_title = ComplaintRawData.objects.filter(read_times=True).values_list('id', 'title')
     return id_title
 
+
+
 def sql_select_department_content():
     content_department = ComplaintRawData.objects.filter(read_times=False).values_list('content', 'reply_unit')
     # ComplaintRawData.objects.filter(read_times=True).update(read_times=False)
@@ -43,14 +45,18 @@ def sql_select_id_department_content():
     return content_department
 
 
+def sql_select_id_title_department_content():
+    id_title_department_content = ComplaintRawData.objects.filter(read_times=False)\
+        .order_by('reply_unit').values_list('id', 'title', 'content', 'reply_unit')
+    # print(len(content_department))
+    # ComplaintRawData.objects.filter(read_times=True).update(read_times=False)
+    return id_title_department_content
+
+
 def sql_select_city_area_department():
     city_area_department = ComplaintRawData.objects.filter(read_times=True)\
         .values_list('city', 'city_area', 'reply_unit')
     return city_area_department
-
-
-def sql_insert_id_classification(id, classification):
-    Classification.objects.get_or_create(complaint_raw_data_id=id, classification=classification)
 
 
 if __name__ == '__main__':
