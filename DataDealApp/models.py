@@ -62,5 +62,7 @@ class Classification(models.Model):   # 每条数据的词频，用来验证
 
 
 class ClassificationFrequency(models.Model):   # 每条数据的词频，用来验证
-    classification = models.CharField(u'类别', primary_key=True)
-    frequency = models.CharField(u'数量', max_length=20)
+    classification = models.CharField(u'类别', primary_key=True, max_length=20)
+    frequency = models.IntegerField(u'数量')
+    words = models.CharField(u'分词', max_length=3000)
+    weight = models.CharField(u'权重', max_length=3000)

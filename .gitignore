@@ -7,6 +7,7 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+.idea
 .Python
 build/
 develop-eggs/
@@ -102,3 +103,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+.idea/LetteVsitDataDeal.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml

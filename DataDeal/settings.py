@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'DataDeal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # 或者使用 django.db.backends.mysql mysql.connector.django
+        'ENGINE': 'mysql.connector.django',  # 或者使用 django.db.backends.mysql mysql.connector.django
         'NAME': 'datadeal',  # 数据库名
         'USER': 'root',
         'PASSWORD': 'root',
