@@ -32,7 +32,7 @@ def city_area():
     for city, area in city_area:
         insert_city_area(city, area)
 
-    print(city, ',', area, '插入完成')
+    print('插入完成')
 
 
 def city_area_department():
@@ -41,9 +41,11 @@ def city_area_department():
     :return:
     """
     city_area_department = sql_select_city_area_department()
+    n = 0
     for city, area, department in city_area_department:
         insert_city_area_department(city, area, department)
 
 
 if __name__ in "__main__":
+    # city_area()
     city_area_department()

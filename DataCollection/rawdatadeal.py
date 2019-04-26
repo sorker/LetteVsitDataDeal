@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from urllib import request, error, parse
 from SqlDeal.sqlcomplaintrawdata import sql_select_title, sql_select_department_content, \
-    sql_select_id_department_content, sql_select_id_title_department_content
+    sql_select_id_department_content, sql_select_id_title_department_content, sql_select_title_context
 from SqlDeal.sqlwordfrequency import insert_department_word_frequency, select_all_department_word_frequency, insert_id_word_frequency
 from ConDriver.redisdriver import redisdriver
 import cpca
@@ -106,34 +106,37 @@ def deal_department_word_frequecy():
 
 def all_words_weight():
     context_percent_file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
-    stop_words = open('../data/停用词表.txt', mode='w+', encoding='utf-8').readlines()
+    stop_words = open('../data/停用词表.txt', mode='r+', encoding='utf-8').read()
     class_file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
-    id_title_department_content = sql_select_id_title_department_content()[:10]
+    id_title_department_content = sql_select_id_title_department_content()
     categorys = []
     for id, title, content, department in id_title_department_content:
-        segments = []
-        for keyword in analyse.textrank(content, topK=50,  withWeight=False, allowPOS=('ns', 'n', 'vn', 'v')):
+        segments = {}
+        for keyword in jieba.cut(content):
             word = keyword.replace(' ', '')
-            if word not in stop_words:
-                segments.append({'word': word, 'count': 1})
+            if word not in stop_words and not keyword.isdigit():
+                if word not in segments:
+                    segments[word] = 1
+                else:
+                    segments[word] += 1
                 # keywords += word + '，'
-        print(segments)
+        # print(segments)
+        classification = None
         if '<' in title:
             classification = title.split('<')[1].split('>')[0]
             if classification not in categorys:
                 categorys.append(classification)
-        else:
-            continue
-        dfSg = pd.DataFrame(segments)
-        dfwords = dfSg.groupby('word')['count'].sum()
         keywords, frequencys = '', ''
-        for keyword, frequency in dfwords.item():
+        for keyword, frequency in segments.items():
             keywords += keyword + ','
             frequencys += str(frequency) + ','
-        strs = str(id), '\t', classification, '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
-        print(strs)
+        if classification is None:
+            strs = str(id), '\t', '===', '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
+        else:
+            strs = str(id), '\t', classification, '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
+        # print(strs)
         context_percent_file.writelines(strs)
-        # insert_id_word_frequency(id=id, classification=classification, word=keywords, frequercy=dfwords)
+        insert_id_word_frequency(id=id, classification=classification, word=keywords, frequercy=frequencys)
     for category in categorys:
         class_file.writelines(category + '\n')
     print('每条数据的类别、词、频率')
@@ -166,6 +169,44 @@ def all_department_weight():
     print('每个部门的词权重')
 
 
+def all_classification_weight():
+    stop_words = open('../data/停用词表.txt', mode='r+', encoding='utf-8').read()
+    class_file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
+    title_context = sql_select_title_context()
+    categorys = []
+    for title, content in title_context:
+        segments = {}
+        # keywords = ''
+        for keyword in jieba.cut(content):
+            word = keyword.replace(' ', '')
+            if word not in stop_words and not keyword.isdigit():
+                if word not in segments:
+                    segments[word] = 1
+                else:
+                    segments[word] += 1
+                # keywords += word + '，'
+        # print(segments)
+        classification = None
+        if '<' in title:
+            classification = title.split('<')[1].split('>')[0]
+            if classification not in categorys:
+                categorys.append(classification)
+        keywords, frequencys = '', ''
+        for keyword, frequency in segments.items():
+            keywords += keyword + ','
+            frequencys += str(frequency) + ','
+        if classification is None:
+            strs = str(id), '\t', '===', '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
+        else:
+            strs = str(id), '\t', classification, '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
+        # print(strs)
+        context_percent_file.writelines(strs)
+        insert_id_word_frequency(id=id, classification=classification, word=keywords, frequercy=frequencys)
+    for category in categorys:
+        class_file.writelines(category + '\n')
+    print('类别、数量、词、 权重')
+
+
 if __name__ == "__main__":
-    all_words_weight()
     # all_words_weight()
+    all_department_weight()

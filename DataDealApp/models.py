@@ -59,7 +59,7 @@ class ContextWordFrequency(models.Model):   # 每条数据的词频，用来验�
 class CityAreaDepartment(models.Model):   # 地点库
     city = models.CharField(u'城市', max_length=20)
     city_area = models.CharField(u'地区', max_length=20)
-    department = models.CharField(u'部门', max_length=30)
+    department = models.CharField(u'部门', max_length=50)
 
     def __str__(self):
         return str(self.id)
@@ -67,7 +67,7 @@ class CityAreaDepartment(models.Model):   # 地点库
 
 class ClassificationFrequency(models.Model):   # 类别权重
     classification = models.CharField(u'类别', primary_key=True, max_length=20)
-    frequency = models.IntegerField(u'数量')
+    number = models.IntegerField(u'数量')
     words = models.CharField(u'分词', max_length=3000)
     weight = models.CharField(u'权重', max_length=3000)
 
