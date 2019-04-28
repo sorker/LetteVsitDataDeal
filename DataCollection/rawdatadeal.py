@@ -205,6 +205,8 @@ def all_classification_weight():
     print('类别、数量、词、 权重')
 
 
+
+
 if __name__ == "__main__":
     # all_words_weight()
     all_classification_weight()

@@ -103,7 +103,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-.idea/LetteVsitDataDeal.iml
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml

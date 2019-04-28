@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'DataDealApp.apps.DatadealappConfig',
     # 'bootstrap'
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'templates')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),   # 若存放静态文件的static目录在project目录下，则用该定义
 ]
+
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
