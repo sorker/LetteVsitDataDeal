@@ -10,6 +10,7 @@ import jieba
 from jieba import analyse
 from ConDriver.redisdriver import redisdriver
 from DataCollection.calculationdeal import word_count_dict
+from config import STOPWORD
 
 
 def get_area_in_txt():
@@ -106,9 +107,9 @@ def deal_department_word_frequecy():
     print('第二次书数据处理完成')
 
 
-def all_classification_words_frequencys():
-    context_percent_file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
-    stop_words = open('../data/停用词表.txt', mode='r+', encoding='utf-8').read()
+# 每条数据的类别、词、权重
+def all_classification_words_weight():
+    # context_percent_file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
     class_file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
     id_title_department_content = sql_select_id_title_department_content()
     categorys = []
@@ -125,28 +126,30 @@ def all_classification_words_frequencys():
                 # keywords += word + '，'
         # print(segments)
         classification = None
-        if '<' in title:
+        if '<' in title:    # 从标题下得到类别
             classification = title.split('<')[1].split('>')[0]
             if classification not in categorys:
                 categorys.append(classification)
         keywords, frequencys = '', ''
         for keyword, frequency in segments.items():
-            keywords += keyword + ','
-            frequencys += str(frequency) + ','
-        if classification is None:
-            strs = str(id), '\t', '===', '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
-        else:
-            strs = str(id), '\t', classification, '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
+            if keyword not in STOPWORD:
+                keywords += keyword + ','
+                frequencys += str(frequency) + ','
+        # if classification is None:    # debug时打印
+        #     strs = str(id), '\t', '===', '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
+        # else:
+        #     strs = str(id), '\t', classification, '\t', department, '\t', keywords, '\t', str(frequencys), '\n'
         # print(strs)
-        context_percent_file.writelines(strs)
+        # context_percent_file.writelines(strs)
         insert_id_word_frequency(id=id, classification=classification, word=keywords, frequercy=frequencys)
     for category in categorys:
         class_file.writelines(category + '\n')
-    print('每条数据的类别、词、频率')
+    print('每条数据的类别、词、权重')
 
 
+# 每个部门的词权重
 def all_department_weight():
-    file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
+    # file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
     id_department_content = sql_select_id_department_content()
     contents = ''
     departments = ''
@@ -156,22 +159,33 @@ def all_department_weight():
             departments = department
             contents = content
         elif departments == department:
-            contents += ',' + content
+            try:
+                contents += str(content)
+            except Exception as e:
+                print(e)
         else:
             keywords, weights = '', ''
-            for keyword, weight in analyse.textrank(contents, topK=30, withWeight=True):
-                keywords += keyword + ','
-                weights += str(weight) + ','
-            strs = str(ids), '\t', departments, '\t', keywords, '\t', weights, '\n'
-            insert_department_word_frequency(department=departments, word=keywords, frequency=weights)
+            for keyword, weight in analyse.textrank(contents, topK=50, withWeight=True):
+                if keyword not in STOPWORD:
+                    keywords += keyword + ','
+                    weights += str(weight) + ','
+            # strs = str(ids), '\t', departments, '\t', keywords, '\t', weights, '\n'
+            insert_department_word_frequency(department=departments, word=keywords, weight=weights)
             # print(strs)
-            file.writelines(strs)
+            # file.writelines(strs)
             departments = department
             contents = content
             ids += 1
+    keywords, weights = '', ''
+    for keyword, weight in analyse.textrank(contents, topK=50, withWeight=True):
+        if keyword not in STOPWORD:
+            keywords += keyword + ','
+            weights += str(weight) + ','
+    insert_department_word_frequency(department=departments, word=keywords, weight=weights)
     print('每个部门的词权重')
 
 
+# 类别、数量、词、 权重
 def all_classification_weight():
     for a in redisdriver.keys_get():  # 清理redis
         redisdriver.driver().delete(a)
@@ -206,6 +220,6 @@ def all_classification_weight():
 
 
 if __name__ == "__main__":
-    # all_words_weight()
-    # all_classification_weight()
+    all_classification_words_weight()
     all_department_weight()
+    all_classification_weight()

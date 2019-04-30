@@ -68,20 +68,8 @@ def sql_insert_classification_weight(classification, number, words, weight):
 
 
 def sql_select_classification_weight():
-    classification_words_weights = {}
-    for classification_words_weight in ClassificationWeight.objects.all().values('classification', 'words', 'weight'):
-        words = classification_words_weight['words'].split(',')
-        words.pop()
-        # print(words)
-        weights = classification_words_weight['weight'].split(',')
-        weights.pop()
-        word_weigtht = {}
-        # for word, weight in words, weights:
-        #     word_weigtht[word] = weight
-        for k, word in enumerate(words):
-            if word is not '':
-                word_weigtht[word] = weights[k]
-        classification_words_weights[classification_words_weight['classification']] = word_weigtht
+    sel_data = ClassificationWeight.objects.all().values('classification', 'words', 'weight')
+    classification_words_weights = sql_to_dict(sel_data, 'classification', 'words', 'weight')
     return classification_words_weights
 
 
@@ -92,11 +80,34 @@ def sql_select_classification():
     return classifications
 
 
+def sql_to_dict(sql_data, *args):  # 把数据库中的分词权重变成可遍历的字典
+    """
+    :param sql_data:
+    :param args: 类别， 分词， 权重的数据库值
+    :return:
+    """
+    words_weights = {}
+    for classification_words_weight in sql_data:
+        words = classification_words_weight[args[1]].split(',')
+        words.pop()
+        # print(words)
+        weights = classification_words_weight[args[2]].split(',')
+        weights.pop()
+        word_weigtht = {}
+        # for word, weight in words, weights:
+        #     word_weigtht[word] = weight
+        for k, word in enumerate(words):
+            if word is not '':
+                word_weigtht[word] = weights[k]
+        words_weights[classification_words_weight[args[0]]] = word_weigtht
+    return words_weights
+
+
 if __name__ == '__main__':
     # print(sql_select_classification_context()[6])
     # print(sql_select_classification_context()[7])
     # print(sql_select_classification_context()[8])
     # print(sql_select_classification_context()[9])
-    # for a in sql_select_classification_weight():
-    print(sql_select_classification_weight())
+    for a in sql_select_id_department_content():
+        print(a)
     # ComplaintRawData.objects.filter(read_times=False).update(read_times=True)

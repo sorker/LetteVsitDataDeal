@@ -28,23 +28,6 @@ class ComplaintRawData(models.Model):
         return str(self.id)
 
 
-class CityArea(models.Model):
-    city = models.CharField(u'城市', max_length=10)
-    city_area = models.CharField(u'地区', max_length=20)
-
-    def __str__(self):
-        return str(self.id)
-
-
-class DepartmentWordFrequency(models.Model):  # 部门的词频
-    department = models.CharField(u'部门', max_length=50)
-    word = models.CharField(u'词', max_length=10000)
-    frequency = models.CharField(u'频率', max_length=3000)
-
-    def __str__(self):
-        return str(self.id)
-
-
 class ContextWordFrequency(models.Model):   # 每条数据的词频，用来验证
     classification = models.CharField(u'类别', max_length=20, null=True)
     word = models.CharField(u'分词', max_length=2000)
@@ -56,19 +39,38 @@ class ContextWordFrequency(models.Model):   # 每条数据的词频，用来验�
         return str(self.id)
 
 
+class CityArea(models.Model):
+    city = models.CharField(u'城市', max_length=10)
+    city_area = models.CharField(u'地区', max_length=20)
+
+    def __str__(self):
+        return str(self.id)
+
+
+class DepartmentWordWeight(models.Model):  # 部门的词频
+    department = models.CharField(u'部门', max_length=50)
+    word = models.CharField(u'词', max_length=10000)
+    weight = models.CharField(u'权重', max_length=3000)
+
+    def __str__(self):
+        return str(self.id)
+
+
 class CityAreaDepartment(models.Model):   # 地点库
     city = models.CharField(u'城市', max_length=20)
     city_area = models.CharField(u'地区', max_length=20)
     department = models.CharField(u'部门', max_length=50)
+    frequency = models.CharField(u'频率', max_length=3000)
+    department_word_weight = models.ForeignKey('DepartmentWordWeight', on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.id)
 
 
 class ClassificationWeight(models.Model):   # 类别权重
-    classification = models.CharField(u'类别', primary_key=True, max_length=20)
+    classification = models.CharField(u'类别', max_length=20)
     number = models.IntegerField(u'数量')
-    words = models.CharField(u'分词', max_length=1000)
+    words = models.CharField(u'分词', max_length=3000)
     weight = models.CharField(u'权重', max_length=8000)
 
     def __str__(self):

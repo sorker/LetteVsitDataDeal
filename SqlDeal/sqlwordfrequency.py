@@ -11,15 +11,15 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DataDeal.settings')
 django.setup()
 
-from DataDealApp.models import DepartmentWordFrequency, ContextWordFrequency
+from DataDealApp.models import DepartmentWordWeight, ContextWordFrequency
 
 
-def insert_department_word_frequency(department, word, frequency):
-    DepartmentWordFrequency.objects.get_or_create(department=department, word=word, frequency=frequency)
+def insert_department_word_frequency(department, word, weight):
+    DepartmentWordWeight.objects.get_or_create(department=department, word=word, weight=weight)
 
 
 def select_all_department_word_frequency():
-    return DepartmentWordFrequency.objects.all().order_by('department').values_list('department', 'word', 'frequency')
+    return DepartmentWordWeight.objects.all().order_by('department').values_list('department', 'word', 'weight')
 
 
 def insert_id_word_frequency(id, classification, word, frequercy):

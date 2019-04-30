@@ -14,7 +14,7 @@ from SqlDeal.sqlcomplaintrawdata import sql_select_classification_weight
 from config import STOPWORD
 
 
-def class_calcu(context):   # 分类
+def class_sort(context):   # 分类
     classification_words_weights = sql_select_classification_weight()
     segments = word_count_dict(context)
     classifications = open('../data/类别.txt', 'r', encoding='utf-8').readline().split(',')
@@ -33,7 +33,6 @@ def class_calcu(context):   # 分类
                     continue
         except Exception as e:
             print(e)
-            print(word_weight)
         classifications_match[classification] = match
     sorted_classifications_match = sorted(classifications_match.items(), key=operator.itemgetter(1), reverse=True)
     return sorted_classifications_match
@@ -57,3 +56,7 @@ def recommend_five(tuple_values):  # 等到匹配度前五
         word_weight[word] = weight
     return word_weight
 
+
+def department_sort(context, city, area):  # 分部门
+    segments = word_count_dict(context)
+    fhfd

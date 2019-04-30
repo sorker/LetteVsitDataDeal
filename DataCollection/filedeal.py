@@ -5,10 +5,11 @@
  @Author  : Sorke
  @Email   : sorker0129@hotmail.com
 """
-from SqlDeal.sqlcityarea import insert_city_area, insert_city_area_department
+from SqlDeal.sqlcityarea import insert_city_area, insert_city_area_department, select_departmentwordwight_id
 from SqlDeal.sqlcomplaintrawdata import sql_select_city_area_department, sql_select_classification
 
 
+# 浙江省城市、区整理
 def city_area():
     """
     浙江省城市、区整理
@@ -35,18 +36,32 @@ def city_area():
     print('插入完成')
 
 
+# 浙江省城市、区下的行政部门整理 先生成部门权重表
 def city_area_department():
     """
     浙江省城市、区下的行政部门整理
     :return:
     """
     city_area_department = sql_select_city_area_department()
-    n = 0
+    department_frequency = {}
     for city, area, department in city_area_department:
-        insert_city_area_department(city, area, department)
+        seg = city + ',' + area + ',' + department
+        if department_frequency.__contains__(seg):
+            department_frequency[seg] += 1
+        else:
+            department_frequency[seg] = 1
+    for city_area_department_str, frequency in department_frequency.items():
+        city, area, department = city_area_department_str.split(',')
+        try:
+            insert_city_area_department(city, area, department, frequency, select_departmentwordwight_id(department))
+        except Exception as e:
+            print(e)
+            print(department)
+            continue
 
 
-def stopkey():
+# 停用词表
+def stopkey():  # 停用词
     file1 = open('../data/deal/中文停用词表.txt', 'r', encoding='utf-8')
     file2 = open('../data/deal/哈工大停用词表.txt', 'r', encoding='utf-8')
     file3 = open('../data/deal/四川大学机器智能实验室停用词库.txt', 'r', encoding='utf-8')
@@ -75,6 +90,7 @@ def stopkey():
     #     print(word)
 
 
+# 类别文件
 def classification_write():
     file = open('../data/类别.txt', 'w+', encoding='utf-8')
     for classification in sql_select_classification():
@@ -82,5 +98,9 @@ def classification_write():
 
 
 if __name__ in "__main__":
-    # city_area()
-    classification_write()
+    city_area()
+    # classification_write()
+    city_area_department()
+    # a = ['1', '2']
+    # c, d = a
+    # print(c, d)
