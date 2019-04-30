@@ -11,7 +11,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DataDeal.settings')
 django.setup()
 
-from DataDealApp.models import ComplaintRawData, ClassificationWeight
+from DataDealApp.models import ComplaintRawData, ClassificationWeight, CityAreaDepartment
 
 
 def sql_insert_complaintrawdata(title, content, reflecting_time, reply_unit, reply_time, reply_opinion, city, area):
@@ -32,7 +32,6 @@ def sql_select_classification_context():
     for content_department in sql_content_departments:
         content_departments.append([content_department.contextwordfrequency.classification, content_department.content])
     return content_departments
-
 
 
 def sql_select_department_content():
@@ -80,18 +79,38 @@ def sql_select_classification():
     return classifications
 
 
+def sql_select_department_weight(city, area):
+    sql_data = CityAreaDepartment.objects.filter(city=city, city_area=area).select_related('department_word_weight')
+    # print(sql_data)
+    sql_data_list = []
+    for a in sql_data:
+        sql_data_list.append({'department': a.department_word_weight.department, 'word': a.department_word_weight.word,
+                              'weight': a.department_word_weight.weight})
+    # print(sql_data_list)
+    department_weight = sql_to_dict(sql_data_list, 'department', 'word', 'weight')
+    return department_weight
+
+
+def sql_select_department(city, area):
+    sql_data = CityAreaDepartment.objects.filter(city=city, city_area=area).values_list('department')
+    departments = []
+    for department in sql_data:
+        departments.append(department[0])
+    return departments
+
+
 def sql_to_dict(sql_data, *args):  # 把数据库中的分词权重变成可遍历的字典
     """
     :param sql_data:
     :param args: 类别， 分词， 权重的数据库值
     :return:
     """
-    words_weights = {}
-    for classification_words_weight in sql_data:
-        words = classification_words_weight[args[1]].split(',')
+    class_words_weights = {}
+    for words_weights in sql_data:
+        words = words_weights[args[1]].split(',')
         words.pop()
         # print(words)
-        weights = classification_words_weight[args[2]].split(',')
+        weights = words_weights[args[2]].split(',')
         weights.pop()
         word_weigtht = {}
         # for word, weight in words, weights:
@@ -99,8 +118,8 @@ def sql_to_dict(sql_data, *args):  # 把数据库中的分词权重变成可遍�
         for k, word in enumerate(words):
             if word is not '':
                 word_weigtht[word] = weights[k]
-        words_weights[classification_words_weight[args[0]]] = word_weigtht
-    return words_weights
+        class_words_weights[words_weights[args[0]]] = word_weigtht
+    return class_words_weights
 
 
 if __name__ == '__main__':
@@ -108,6 +127,7 @@ if __name__ == '__main__':
     # print(sql_select_classification_context()[7])
     # print(sql_select_classification_context()[8])
     # print(sql_select_classification_context()[9])
-    for a in sql_select_id_department_content():
-        print(a)
+    # print(len(sql_select_department_weight('杭州', '上城区')))
+    # sql_select_classification_weight()
+    print(sql_select_department_weight('杭州', '上城区'))
     # ComplaintRawData.objects.filter(read_times=False).update(read_times=True)

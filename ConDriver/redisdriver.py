@@ -58,6 +58,8 @@ class RedisDriver:
         """
         return self.driver().keys()
 
+    def delete_key(self, key):
+        return self.driver().delete(key)
 
 redisdriver = RedisDriver()
 

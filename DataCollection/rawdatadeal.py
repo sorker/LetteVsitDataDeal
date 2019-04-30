@@ -203,12 +203,15 @@ def all_classification_weight():
             elif exist == 1:
                 categorys[classification] += 1
                 context += redisdriver.value_get(classification).decode()
+                redisdriver.delete_key(classification)
                 # print(redisdriver.value_get(classification).decode())
                 redisdriver.classification_weight_set(classification, context)
         else:
             continue
     for b in redisdriver.keys_get():
         one_classification = b.decode()
+        if one_classification == '教育经费管理':
+            print('w')
         all_classification_context = redisdriver.value_get(b).decode()
         keywords, weights = '', ''
         for keyword, weight in analyse.textrank(all_classification_context, topK=600, withWeight=True):
@@ -220,6 +223,6 @@ def all_classification_weight():
 
 
 if __name__ == "__main__":
-    # all_classification_words_weight()
-    # all_department_weight()
+    all_classification_words_weight()
+    all_department_weight()
     all_classification_weight()
