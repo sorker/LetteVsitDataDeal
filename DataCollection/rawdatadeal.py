@@ -214,12 +214,12 @@ def all_classification_weight():
         for keyword, weight in analyse.textrank(all_classification_context, topK=600, withWeight=True):
             if keyword not in STOPWORD:
                 keywords += keyword + ','
-                weights += str(weight) + ','
+                weights += str(weight)[:12] + ','
         sql_insert_classification_weight(one_classification, categorys[one_classification], keywords, weights)
     print('类别、数量、词、 权重')
 
 
 if __name__ == "__main__":
-    all_classification_words_weight()
-    all_department_weight()
+    # all_classification_words_weight()
+    # all_department_weight()
     all_classification_weight()
