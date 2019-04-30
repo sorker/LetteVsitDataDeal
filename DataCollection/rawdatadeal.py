@@ -5,12 +5,11 @@ from SqlDeal.sqlcomplaintrawdata import sql_select_title, sql_select_department_
     sql_insert_classification_weight
 from SqlDeal.sqlwordfrequency import insert_department_word_frequency, select_all_department_word_frequency, \
     insert_id_word_frequency
-from ConDriver.redisdriver import redisdriver
 import cpca
 import jieba
 from jieba import analyse
 from ConDriver.redisdriver import redisdriver
-import pandas as pd
+from DataCollection.calculationdeal import word_count_dict
 
 
 def get_area_in_txt():
@@ -113,15 +112,16 @@ def all_classification_words_frequencys():
     class_file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
     id_title_department_content = sql_select_id_title_department_content()
     categorys = []
-    for id, title, content, department in id_title_department_content:
-        segments = {}
-        for keyword in jieba.cut(content):
-            word = keyword.replace(' ', '')
-            if word not in stop_words and not keyword.isdigit():
-                if word not in segments:
-                    segments[word] = 1
-                else:
-                    segments[word] += 1
+    for id, title, context, department in id_title_department_content:
+        segments = word_count_dict(context)
+        # segments = {}
+        # for keyword in jieba.cut(content):
+        #     word = keyword.replace(' ', '')
+        #     if word not in stop_words and not keyword.isdigit():
+        #         if word not in segments:
+        #             segments[word] = 1
+        #         else:
+        #             segments[word] += 1
                 # keywords += word + '，'
         # print(segments)
         classification = None
@@ -175,7 +175,6 @@ def all_department_weight():
 def all_classification_weight():
     for a in redisdriver.keys_get():  # 清理redis
         redisdriver.driver().delete(a)
-    stop_words = open('../data/停用词表.txt', mode='r+', encoding='utf-8').read()
     class_file = open('../data/deal/class.txt', 'r+', encoding='utf-8')
     title_context = sql_select_classification_context()
     categorys = {}
@@ -198,16 +197,15 @@ def all_classification_weight():
         one_classification = b.decode()
         all_classification_context = redisdriver.value_get(b).decode()
         keywords, weights = '', ''
-        for keyword, weight in analyse.textrank(all_classification_context, topK=500, withWeight=True):
-            keywords += keyword + ','
-            weights += str(weight)[:8] + ','
+        for keyword, weight in analyse.textrank(all_classification_context, topK=600, withWeight=True):
+            if keyword not in STOPWORD:
+                keywords += keyword + ','
+                weights += str(weight) + ','
         sql_insert_classification_weight(one_classification, categorys[one_classification], keywords, weights)
     print('类别、数量、词、 权重')
 
 
-
-
 if __name__ == "__main__":
     # all_words_weight()
-    all_classification_weight()
-    # all_department_weight()
+    # all_classification_weight()
+    all_department_weight()

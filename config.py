@@ -16,3 +16,5 @@ ELEMENT_CLICK_ORDER = {
 
 ELEMENT_TITLE_CONTENT = [By.XPATH, '//table[@class="tablelist1"]/tbody/tr']  # 获取标题和时间
 
+
+STOPWORD = open('../data/停用词表.txt', mode='r+', encoding='utf-8').read()

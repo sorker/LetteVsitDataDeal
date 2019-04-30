@@ -67,10 +67,36 @@ def sql_insert_classification_weight(classification, number, words, weight):
     ClassificationWeight.objects.get_or_create(classification=classification, number=number, words=words, weight=weight)
 
 
+def sql_select_classification_weight():
+    classification_words_weights = {}
+    for classification_words_weight in ClassificationWeight.objects.all().values('classification', 'words', 'weight'):
+        words = classification_words_weight['words'].split(',')
+        words.pop()
+        # print(words)
+        weights = classification_words_weight['weight'].split(',')
+        weights.pop()
+        word_weigtht = {}
+        # for word, weight in words, weights:
+        #     word_weigtht[word] = weight
+        for k, word in enumerate(words):
+            if word is not '':
+                word_weigtht[word] = weights[k]
+        classification_words_weights[classification_words_weight['classification']] = word_weigtht
+    return classification_words_weights
+
+
+def sql_select_classification():
+    classifications = []
+    for classification in ClassificationWeight.objects.values('classification'):
+        classifications.append(classification['classification'])
+    return classifications
+
+
 if __name__ == '__main__':
-    print(sql_select_classification_context()[6])
-    print(sql_select_classification_context()[7])
-    print(sql_select_classification_context()[8])
-    print(sql_select_classification_context()[9])
-    print(sql_select_classification_context()[10])
+    # print(sql_select_classification_context()[6])
+    # print(sql_select_classification_context()[7])
+    # print(sql_select_classification_context()[8])
+    # print(sql_select_classification_context()[9])
+    # for a in sql_select_classification_weight():
+    print(sql_select_classification_weight())
     # ComplaintRawData.objects.filter(read_times=False).update(read_times=True)

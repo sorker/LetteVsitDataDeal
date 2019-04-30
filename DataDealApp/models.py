@@ -68,8 +68,8 @@ class CityAreaDepartment(models.Model):   # 地点库
 class ClassificationWeight(models.Model):   # 类别权重
     classification = models.CharField(u'类别', primary_key=True, max_length=20)
     number = models.IntegerField(u'数量')
-    words = models.CharField(u'分词', max_length=3000)
-    weight = models.CharField(u'权重', max_length=5000)
+    words = models.CharField(u'分词', max_length=1000)
+    weight = models.CharField(u'权重', max_length=8000)
 
     def __str__(self):
         return str(self.id)
