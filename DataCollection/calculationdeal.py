@@ -11,7 +11,7 @@ from jieba import analyse
 from ConDriver.redisdriver import redisdriver
 import operator
 from SqlDeal.sqlcomplaintrawdata import sql_select_classification_weight, sql_select_department, sql_select_department_weight
-STOPWORD = open("../data/停用词表.txt", mode='r+', encoding='utf-8').read()
+
 
 
 def class_sort(context):   # 分类
@@ -39,6 +39,7 @@ def class_sort(context):   # 分类
 
 
 def word_count_dict(context):  # 分词并计算词频
+    STOPWORD = open("../data/停用词表.txt", mode='r+', encoding='utf-8').read()
     segments = {}
     for keyword in jieba.cut(context):
         word = keyword.replace(' ', '')

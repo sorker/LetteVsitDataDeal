@@ -5,7 +5,8 @@
  @Author  : Sorke
  @Email   : sorker0129@hotmail.com
 """
-from SqlDeal.sqlviewroute import classification_number_out, department_frequency_out, department_classification_foruser, DepartmentClassificationForUser
+from SqlDeal.sqlviewroute import classification_number_out, department_frequency_out, department_classification_foruser, \
+    DepartmentClassificationForUser
 from DataCollection.calculationdeal import recommend_five, department_sort, class_sort, tuple_to_dict
 from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
@@ -29,6 +30,14 @@ def deparment_class_sort_out(request):
 
 
 def department_frequency_port(request):
-    return HttpResponse(classification_number_out())
+    return JsonResponse(department_frequency_out())
 
 
+def classification_number_port(request):
+    return JsonResponse(classification_number_out())
+
+
+def sort_out(request):
+    department_classification = department_classification_foruser(request.city, request.area, request.department,
+                                                                  request.context, request.classification)
+    return JsonResponse(department_classification)
