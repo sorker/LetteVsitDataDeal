@@ -75,3 +75,14 @@ class ClassificationWeight(models.Model):   # 类别权重
 
     def __str__(self):
         return str(self.id)
+
+
+class DepartmentClassificationForUser(models.Model):   # 用户提交的数据
+    city = models.CharField(u'城市', max_length=20)
+    city_area = models.CharField(u'地区', max_length=20)
+    department = models.CharField(u'部门', max_length=50)
+    context = models.CharField(u'内容', max_length=2000)
+    classification = models.CharField(u'类别', max_length=20)
+
+    def __str__(self):
+        return str(self.id)

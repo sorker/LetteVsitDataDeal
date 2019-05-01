@@ -10,7 +10,7 @@ import jieba
 from jieba import analyse
 from ConDriver.redisdriver import redisdriver
 from DataCollection.calculationdeal import word_count_dict
-from config import STOPWORD
+STOPWORD = open("../data/停用词表.txt", mode='r+', encoding='utf-8').read()
 
 
 def get_area_in_txt():
@@ -210,8 +210,6 @@ def all_classification_weight():
             continue
     for b in redisdriver.keys_get():
         one_classification = b.decode()
-        if one_classification == '教育经费管理':
-            print('w')
         all_classification_context = redisdriver.value_get(b).decode()
         keywords, weights = '', ''
         for keyword, weight in analyse.textrank(all_classification_context, topK=600, withWeight=True):
@@ -223,6 +221,6 @@ def all_classification_weight():
 
 
 if __name__ == "__main__":
-    all_classification_words_weight()
+    # all_classification_words_weight()
     all_department_weight()
     all_classification_weight()

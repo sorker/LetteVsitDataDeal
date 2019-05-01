@@ -5,21 +5,30 @@
  @Author  : Sorke
  @Email   : sorker0129@hotmail.com
 """
-from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
-# Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'is_staff')
+from SqlDeal.sqlviewroute import classification_number_out, department_frequency_out, department_classification_foruser, DepartmentClassificationForUser
+from DataCollection.calculationdeal import recommend_five, department_sort, class_sort, tuple_to_dict
+from django.shortcuts import render, redirect
+from django.shortcuts import HttpResponse
+from django.http import JsonResponse
 
-# ViewSets define the view behavior.
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
 
-# Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
+def deparment_class_sort_out(request):
+    if DepartmentClassificationForUser.objects.get(context=request.context):
+        department_classification = DepartmentClassificationForUser.objects.all().values('classification', 'department')
+        department_classification['message'] = '数据已存在'
+        return JsonResponse(department_classification)
+    else:
+        department_classification = {}
+        classification_number = tuple_to_dict(recommend_five(class_sort(request.context)))
+        department_frequency = tuple_to_dict(recommend_five(department_sort(request.context,
+                                                                            request.city, request.area)))
+        department_classification['classification'] = classification_number
+        department_classification['department'] = department_frequency
+        department_classification['message'] = '处理完成'
+        return JsonResponse(department_classification)
+
+
+def department_frequency_port(request):
+    return HttpResponse(classification_number_out())
 
 

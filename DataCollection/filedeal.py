@@ -98,7 +98,7 @@ def classification_write():
 
 
 if __name__ in "__main__":
-    city_area()
+    # city_area()
     # classification_write()
     city_area_department()
     # a = ['1', '2']

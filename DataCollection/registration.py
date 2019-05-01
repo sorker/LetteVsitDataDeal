@@ -15,7 +15,8 @@ from SqlDeal.sqlcityarea import select_city_area
 
 class Registeration:
     def __init__(self):
-        self.driver = ChromeDriver.driver()
+        # self.driver = ChromeDriver.driver()
+        self.driver = ChromeDriver.driver_options()
 
     def click_time(self):  # 按顺序点击
         for by, vlaue in ELEMENT_CLICK_ORDER.items():
@@ -127,24 +128,27 @@ class Registeration:
         :desc: 循环获取每个地点的数据
         :return:
         """
-        self.driver.get(URL)
-        self.click_time()
-        city_areas = []
-        if len(city_area) == 0:
-            city_area = select_city_area()
-        for id, city, area in city_area:
-            # print(id, city, area)
-            try:
-                self.browser_event(city, area)
-            except Exception as e:
-                self.driver.refresh()
-                print('next_area: ', e)
-                city_areas.append([city, area])
-                continue
-        print(city_areas)
-        if len(city_areas) != 0:
-            self.next_area(city_areas)
-        self.driver.close()
+        try:
+            self.driver.get(URL)
+            self.click_time()
+            city_areas = []
+            if len(city_area) == 0:
+                city_area = select_city_area()
+            for id, city, area in city_area:
+                # print(id, city, area)
+                try:
+                    self.browser_event(city, area)
+                except Exception as e:
+                    self.driver.refresh()
+                    print('next_area: ', e)
+                    city_areas.append([city, area])
+                    continue
+            print(city_areas)
+            if len(city_areas) != 0:
+                self.next_area(city_areas)
+            self.driver.close()
+        except Exception as e:
+            print(e)
 
     def browser_event(self, city, area):
         print(city, ', ', area)

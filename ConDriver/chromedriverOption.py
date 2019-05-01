@@ -6,7 +6,7 @@
 """
 
 from selenium import webdriver
-from config import URL, URL_TEST
+# from config import URL_TEST
 
 
 class ChromeDriver:
@@ -26,4 +26,4 @@ class ChromeDriver:
 if __name__ == '__main__':
     # driver = chromedriver.driver()
     driver = ChromeDriver.driver_options()
-    driver.get(URL_TEST)
+    # driver.get(URL_TEST)
