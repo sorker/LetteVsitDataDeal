@@ -7,8 +7,6 @@
 """
 from SqlDeal.sqlcityarea import insert_city_area, insert_city_area_department, select_departmentwordwight_id
 from SqlDeal.sqlcomplaintrawdata import sql_select_city_area_department, sql_select_classification
-from config import DEAL_DIR, DATA_DIR
-import os
 
 
 # 浙江省城市、区整理
@@ -17,8 +15,7 @@ def city_area():
     浙江省城市、区整理
     :return:
     """
-    print('开始浙江省城市、区整理')
-    filename = os.path.join(DATA_DIR, 'city_area.txt')
+    filename = '../data/city_area.txt'
     file = open(filename, mode='r')
     text = file.readlines()
     # print(text)
@@ -36,7 +33,7 @@ def city_area():
     for city, area in city_area:
         insert_city_area(city, area)
 
-    print('浙江省城市、区整理完成')
+    print('插入完成')
 
 
 # 浙江省城市、区下的行政部门整理 先生成部门权重表
@@ -45,7 +42,6 @@ def city_area_department():
     浙江省城市、区下的行政部门整理
     :return:
     """
-    print('开始运行市、区下的行政部门整理 先生成部门权重表')
     city_area_department = sql_select_city_area_department()
     department_frequency = {}
     for city, area, department in city_area_department:
@@ -62,16 +58,15 @@ def city_area_department():
             print(e)
             print(department)
             continue
-    print('数据整理完成')
 
 
 # 停用词表
 def stopkey():  # 停用词
-    file1 = open(os.path.join(DEAL_DIR, '中文停用词表.txt'), 'r', encoding='utf-8')
-    file2 = open(os.path.join(DEAL_DIR, '哈工大停用词表.txt'), 'r', encoding='utf-8')
-    file3 = open(os.path.join(DEAL_DIR, '四川大学机器智能实验室停用词库.txt'), 'r', encoding='utf-8')
-    file5 = open(os.path.join(DEAL_DIR, '1208个停用词.txt'), 'r', encoding='utf-8')
-    file4 = open(os.path.join(DATA_DIR, '停用词表.txt'), 'w+', encoding='utf-8')
+    file1 = open('../data/deal/中文停用词表.txt', 'r', encoding='utf-8')
+    file2 = open('../data/deal/哈工大停用词表.txt', 'r', encoding='utf-8')
+    file3 = open('../data/deal/四川大学机器智能实验室停用词库.txt', 'r', encoding='utf-8')
+    file5 = open('../data/deal/1208个停用词.txt', 'r', encoding='utf-8')
+    file4 = open('../data/停用词表.txt', 'w+', encoding='utf-8')
     words1 = file1.readlines()
     words2 = file2.readlines()
     words3 = file3.readlines()
@@ -103,10 +98,9 @@ def classification_write():
 
 
 if __name__ in "__main__":
-    city_area()
+    # city_area()
     # classification_write()
-    # city_area_department()
-    # stopkey()
+    city_area_department()
     # a = ['1', '2']
     # c, d = a
     # print(c, d)

@@ -15,8 +15,8 @@ from SqlDeal.sqlcityarea import select_city_area
 
 class Registeration:
     def __init__(self):
-        self.driver = ChromeDriver.driver()
-        # self.driver = ChromeDriver.driver_options()
+        # self.driver = ChromeDriver.driver()
+        self.driver = ChromeDriver.driver_options()
 
     def click_time(self):  # 按顺序点击
         for by, vlaue in ELEMENT_CLICK_ORDER.items():
@@ -79,8 +79,7 @@ class Registeration:
         except Exception as e:
             try:
                 self.driver.find_element_by_xpath('//span[@class="layui-layer-setwin"]/a').click()
-            except Exception as e:
-                print('frame2:', e)
+            except Exception:
                 self.driver.refresh()
                 pass
             print('click_title_switch_ifarme: ', e)
@@ -129,7 +128,6 @@ class Registeration:
         :desc: 循环获取每个地点的数据
         :return:
         """
-        print('开始获取原始数据')
         try:
             self.driver.get(URL)
             self.click_time()
@@ -150,8 +148,7 @@ class Registeration:
                 self.next_area(city_areas)
             self.driver.close()
         except Exception as e:
-            print('未知', e)
-        print('原始数据获取结束')
+            print(e)
 
     def browser_event(self, city, area):
         print(city, ', ', area)

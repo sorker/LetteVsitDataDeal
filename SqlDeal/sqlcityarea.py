@@ -19,14 +19,7 @@ def insert_city_area(city, city_area):
 
 
 def select_city_area():
-    print('开始获取城市数据')
     all_city = CityArea.objects.all().values_list()
-    # if len(all_city) == 0:
-    #     print('城市数据不存在，开始重新整理')
-    #     city_area()
-    #     print('开始重新获取城市数据')
-    #     all_city = CityArea.objects.all().values_list()
-    # print('获取城市数据完成')
     return all_city
 
 
@@ -45,4 +38,4 @@ def select_department_word_weight():
 
 
 if __name__ == '__main__':
-    select_city_area()
+    print(select_departmentwordwight_id('龙湾城市中心区管委会'))

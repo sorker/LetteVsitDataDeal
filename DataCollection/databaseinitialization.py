@@ -13,12 +13,12 @@ from SqlDeal.sqldeletedata import sql_delete_data
 
 def database_initialization():
     # sql_delete_data()
-    registeration.next_area()
+    # registeration.next_area()
     # all_classification_words_weight()
-    # all_department_weight()
-    # all_classification_weight()
-    # city_area_department()
+    all_department_weight()
+    all_classification_weight()
+    city_area_department()
 
 
-if __name__ in "__main__":
-    database_initialization()
+if __name__ in '__mian__':
+    print(database_initialization())
