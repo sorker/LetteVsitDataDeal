@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 import os
 
 URL = 'http://zxts.zjzwfw.gov.cn/wsdt.do?method=sunshine'   # 网址
-URL_TEST = 'http://www.baidu.com' # 测试地址
+URL_TEST = 'http://www.baidu.com'  # 测试地址
 
 ELEMENT_CLICK_ORDER = {
     By.CLASS_NAME: 'delete',

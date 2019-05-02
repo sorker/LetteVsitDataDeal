@@ -126,7 +126,6 @@ class Registeration:
     def next_area(self, city_area=[]):
         """
         :desc: 循环获取每个地点的数据
-        :return:
         """
         try:
             self.driver.get(URL)
