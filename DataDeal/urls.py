@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from DataDealApp.views import GetTest, GetTestasd
 from django.conf.urls import url, include
-from DataDeal.views import department_frequency_port, classification_number_port, deparment_class_sort_out
+from DataDeal.views import department_frequency_port, classification_number_port, deparment_class_sort_out, sort_out
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -28,5 +28,6 @@ urlpatterns = [
     path(r'department_frequency_port/', department_frequency_port),
     path(r'classification_number_port/', classification_number_port),
     path(r'deparment_class_sort_out/', deparment_class_sort_out),
+    path(r'sort_out/', sort_out),
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

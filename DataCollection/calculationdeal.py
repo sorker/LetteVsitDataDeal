@@ -7,17 +7,19 @@
 """
 import cpca
 import jieba
+import os
 from jieba import analyse
 from ConDriver.redisdriver import redisdriver
 import operator
 from SqlDeal.sqlcomplaintrawdata import sql_select_classification_weight, sql_select_department, sql_select_department_weight
-
+from config import STOPWORD, DATA_DIR
 
 
 def class_sort(context):   # 分类
     classification_words_weights = sql_select_classification_weight()
     segments = word_count_dict(context)
-    classifications = open('../data/类别.txt', 'r', encoding='utf-8').readline().split(',')
+    class_dir = os.path.join(DATA_DIR, '类别.txt')
+    classifications = open(class_dir, 'r', encoding='utf-8').readline().split(',')
     classifications.pop()
     classifications_match = {}
     for classification in classifications:
@@ -39,7 +41,6 @@ def class_sort(context):   # 分类
 
 
 def word_count_dict(context):  # 分词并计算词频
-    STOPWORD = open("../data/停用词表.txt", mode='r+', encoding='utf-8').read()
     segments = {}
     for keyword in jieba.cut(context):
         word = keyword.replace(' ', '')
@@ -71,8 +72,8 @@ def department_sort(context, city, area):  # 分部门
         for word, weight in word_weight.items():  # 如果有则权重相加
             # print(word)
             if segments.__contains__(word):
-                print(department, word)
-                print(segments[word])
+                # print(department, word)
+                # print(segments[word])
                 match += float(weight) * segments[word]
             else:
                 continue

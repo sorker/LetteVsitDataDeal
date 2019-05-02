@@ -27,7 +27,8 @@ def department_frequency_out():
 
 
 def city_area_number():
-    area_number = CityAreaDepartment.objects.all().values('city', 'city_area').annotate(count=Count('city_area')).values_list('city', 'city_area', 'count')
+    area_number = CityAreaDepartment.objects.all().values('city', 'city_area').annotate(
+        count=Count('city_area')).values_list('city', 'city_area', 'count')
     area_number_dict = {}
     city = ''
     area_count = {}
@@ -49,7 +50,7 @@ def department_classification_foruser(city, area, department, context, classific
     try:
         DepartmentClassificationForUser.objects.get(context=context)
         department_classification = \
-        DepartmentClassificationForUser.objects.all().values('classification', 'department')[0]
+        DepartmentClassificationForUser.objects.filter(context=context).values('classification', 'department')[0]
         department_classification['message'] = '数据已存在'
         return department_classification
     except:

@@ -14,19 +14,26 @@ from django.http import JsonResponse
 
 
 def deparment_class_sort_out(request):
-    if DepartmentClassificationForUser.objects.get(context=request.context):
-        department_classification = DepartmentClassificationForUser.objects.all().values('classification', 'department')
-        department_classification['message'] = '数据已存在'
-        return JsonResponse(department_classification)
-    else:
-        department_classification = {}
-        classification_number = tuple_to_dict(recommend_five(class_sort(request.context)))
-        department_frequency = tuple_to_dict(recommend_five(department_sort(request.context,
-                                                                            request.city, request.area)))
-        department_classification['classification'] = classification_number
-        department_classification['department'] = department_frequency
-        department_classification['message'] = '处理完成'
-        return JsonResponse(department_classification)
+    department_classification = {}
+    try:
+        city, area, context = request.GET['city'], request.GET['area'], request.GET['context']
+        try:
+            DepartmentClassificationForUser.objects.check(context=context)
+            department_classification = \
+            DepartmentClassificationForUser.objects.filter(context=context).values('classification', 'department')[0]
+            department_classification['message'] = '数据已存在'
+            return JsonResponse(department_classification)
+        except Exception as e:
+            if city or area or context:
+                classification_number = recommend_five(class_sort(context))
+                department_frequency = recommend_five(department_sort(context, city, area))
+                department_classification['classification'] = classification_number
+                department_classification['department'] = department_frequency
+                department_classification['message'] = '处理完成'
+            # print(department_classification)
+    except Exception as e:
+        department_classification['message'] = '请输入城市、地点、内容'
+    return JsonResponse(department_classification)
 
 
 def department_frequency_port(request):
@@ -38,8 +45,13 @@ def classification_number_port(request):
 
 
 def sort_out(request):
-    department_classification = department_classification_foruser(request.city, request.area, request.department,
-                                                                  request.context, request.classification)
+    department_classification = {}
+    try:
+        city, area, department, context, classification = request.GET['city'], request.GET['area'], request.GET[
+            'department'], request.GET['context'], request.GET['classification']
+        department_classification = department_classification_foruser(city, area, department, context, classification)
+    except:
+        department_classification['message'] = '请输入城市、地点、部门、内容、、类别'
     return JsonResponse(department_classification)
 
 
@@ -47,5 +59,6 @@ def city_area_count(request):
     return JsonResponse(city_area_number())
 
 
-# if __name__ in '__main__':
-#     print(classification_number_port())
+if __name__ in '__main__':
+    print(recommend_five(class_sort('电视里播放萨鲁的烦恼拉萨的妇女')))
+    # print(DepartmentClassificationForUser.objects.filter(id='1').values('classification', 'department')[0])
