@@ -10,7 +10,7 @@ import os
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'DataDeal.settings')
 django.setup()
-
+from django.db.models import Count
 from DataDealApp.models import DepartmentWordWeight, CityAreaDepartment, ClassificationWeight, \
     DepartmentClassificationForUser
 from DataCollection.calculationdeal import tuple_to_dict
@@ -27,7 +27,22 @@ def department_frequency_out():
 
 
 def city_area_number():
-    area_number = CityAreaDepartment.objects.all().annotate(count=Count('city_area'))
+    area_number = CityAreaDepartment.objects.all().values('city', 'city_area').annotate(count=Count('city_area')).values_list('city', 'city_area', 'count')
+    area_number_dict = {}
+    city = ''
+    area_count = {}
+    for x, y, z in area_number:
+        if city == '':
+            city = x
+            area_count[y] = z
+        elif city == x:
+            area_count[y] = z
+        else:
+            area_number_dict[city] = area_count
+            city = x
+            area_count = {}
+            area_count[y] = z
+    return area_number_dict
 
 
 def department_classification_foruser(city, area, department, context, classification):

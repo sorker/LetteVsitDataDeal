@@ -6,7 +6,7 @@
  @Email   : sorker0129@hotmail.com
 """
 from SqlDeal.sqlviewroute import classification_number_out, department_frequency_out, department_classification_foruser, \
-    DepartmentClassificationForUser
+    DepartmentClassificationForUser, city_area_number
 from DataCollection.calculationdeal import recommend_five, department_sort, class_sort, tuple_to_dict
 from django.shortcuts import render, redirect
 from django.shortcuts import HttpResponse
@@ -41,3 +41,11 @@ def sort_out(request):
     department_classification = department_classification_foruser(request.city, request.area, request.department,
                                                                   request.context, request.classification)
     return JsonResponse(department_classification)
+
+
+def city_area_count(request):
+    return JsonResponse(city_area_number())
+
+
+# if __name__ in '__main__':
+#     print(classification_number_port())
