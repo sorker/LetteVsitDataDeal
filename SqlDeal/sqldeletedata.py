@@ -14,6 +14,8 @@ django.setup()
 from DataDealApp.models import DepartmentWordWeight, CityAreaDepartment, ClassificationWeight
 
 def sql_delete_data():
+    print('开始清理数据库')
     DepartmentWordWeight.objects.all().delete()
     CityAreaDepartment.objects.all().delete()
     ClassificationWeight.objects.all().delete()
+    print('数据库清理结束')

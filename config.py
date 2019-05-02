@@ -16,6 +16,8 @@ ELEMENT_CLICK_ORDER = {
 }   # 点击网页的元素的顺序
 
 ELEMENT_TITLE_CONTENT = [By.XPATH, '//table[@class="tablelist1"]/tbody/tr']  # 获取标题和时间
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, 'data')
+DEAL_DIR = os.path.join(DATA_DIR, 'deal')
 STOPWORD = open(os.path.join(DATA_DIR, '停用词表.txt'), mode='r+', encoding='utf-8').read()

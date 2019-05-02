@@ -10,7 +10,7 @@ import jieba
 from jieba import analyse
 from ConDriver.redisdriver import redisdriver
 from DataCollection.calculationdeal import word_count_dict
-STOPWORD = open("../data/停用词表.txt", mode='r+', encoding='utf-8').read()
+from config import STOPWORD
 
 
 def get_area_in_txt():
@@ -109,8 +109,8 @@ def deal_department_word_frequecy():
 
 # 每条数据的类别、词、权重
 def all_classification_words_weight():
+    print('开始运行每条数据的类别、词、权重')
     # context_percent_file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
-    class_file = open('../data/deal/class.txt', 'w+', encoding='utf-8')
     id_title_department_content = sql_select_id_title_department_content()
     categorys = []
     for id, title, context, department in id_title_department_content:
@@ -142,13 +142,12 @@ def all_classification_words_weight():
         # print(strs)
         # context_percent_file.writelines(strs)
         insert_id_word_frequency(id=id, classification=classification, word=keywords, frequercy=frequencys)
-    for category in categorys:
-        class_file.writelines(category + '\n')
-    print('每条数据的类别、词、权重')
+    print('每条数据的类别、词、权重运行结束')
 
 
 # 每个部门的词权重
 def all_department_weight():
+    print('开始运行每个部门的词权重')
     # file = open('../data/deal/context_percent.txt', mode='w+', encoding='utf-8')
     id_department_content = sql_select_id_department_content()
     contents = ''
@@ -182,14 +181,14 @@ def all_department_weight():
             keywords += keyword + ','
             weights += str(weight) + ','
     insert_department_word_frequency(department=departments, word=keywords, weight=weights)
-    print('每个部门的词权重')
+    print('每个部门的词权重运行结束')
 
 
 # 类别、数量、词、 权重
 def all_classification_weight():
+    print('开始运行类别、数量、词、 权重')
     for a in redisdriver.keys_get():  # 清理redis
         redisdriver.driver().delete(a)
-    class_file = open('../data/deal/class.txt', 'r+', encoding='utf-8')
     title_context = sql_select_classification_context()
     categorys = {}
     for classification, context in title_context:
@@ -217,10 +216,10 @@ def all_classification_weight():
                 keywords += keyword + ','
                 weights += str(weight)[:12] + ','
         sql_insert_classification_weight(one_classification, categorys[one_classification], keywords, weights)
-    print('类别、数量、词、 权重')
+    print('类别、数量、词、 权重运行结束')
 
 
-if __name__ == "__main__":
-    # all_classification_words_weight()
-    all_department_weight()
-    all_classification_weight()
+# if __name__ == "__main__":
+#     all_classification_words_weight()
+    # all_department_weight()
+    # all_classification_weight()
