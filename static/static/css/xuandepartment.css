@@ -1,0 +1,40 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.c1{
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    padding-left: 500px;
+}
+.c2{
+     height: 50px;
+}
+p{
+    font-size: 14px;
+    text-align: center;
+}
+
+.banner{
+    /*border: 1px solid red;*/
+    width: 500px;
+    height: 500px;
+    margin: 0 auto ;
+}
+select{
+    display: block;
+    width: 100px;
+    height: 20px;
+    margin: 5px auto 30px;
+}
+.xuan{
+    width: 230px;
+    height: 40px;
+    padding: 5px;
+    margin: 0 auto;
+}
+input{
+    width: 100px;
+    height: 30px;
+}

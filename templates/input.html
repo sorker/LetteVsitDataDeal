@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/input.css">
+</head>
+<body>
+   <!-- <iframe name="frame1" frameborder="0" id="frame" width="10px" height="10px"></iframe>-->
+    <div class="c1">
+        欢迎来到投诉系统
+    </div>
+   <!--target="frame1"-->
+    <form action="/tsxs/getinput" method="post" >
+        <ul>
+            <li>
+                <span>城市</span>
+                <input type="text" name="city" id="city">
+            </li>
+            <li>
+                <span>区县</span>
+                <input type="text" name="country" id="country">
+            </li>
+        </ul>
+        <div class="input_text">
+            <p>主题:<textarea rows="2" cols="50" name="title" id="title"></textarea></p>
+            <p>内容:<textarea rows="29" cols="100" name="content" id="content"></textarea></p>
+            <input type="button" value="提交" name ="submit" id="submit">
+        </div>
+    </form>
+</body>
+</html>
+<script src="../static/js/jquery-3.4.0.js"></script>
+<script src="../static/js/submitinput.js"></script>

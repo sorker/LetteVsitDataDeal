@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>请选择部门和类别</title>
+    <link rel="stylesheet" href="../static/css/xuandepartment.css">
+</head>
+<body>
+    <div class="c1">
+        请选择部门和类别
+    </div>
+    <div class="banner">
+        <p>已经删选出最符合条件的前5个部门</p>
+        <select>
+            <optino>请选择部门</optino>
+            <option>教育部</option>
+            <option>工作部</option>
+            <option>公安部</option>
+            <option>社会部</option>
+            <option>社区部</option>
+        </select>
+        <div class="c2"></div>
+        <p>已经删选出最符合条件的前5个类别</p>
+        <select>
+            <optino>请选择类别</optino>
+            <option>教育类</option>
+            <option>工作类</option>
+            <option>公安类</option>
+            <option>社会类</option>
+            <option>社区类</option>
+        </select>
+        <div class="xuan">
+            <input type="button" value="返回投诉窗口" id="back">
+            <input type="button" value="提交" id="submit">
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    var submit = document.getElementById("submit");
+    submit.onclick=function (ev) {
+        alert("已提交到该部门该类别");
+    }
+    var back = document.getElementById("back");
+    back.onclick=function (ev) {
+        history.back();
+    }
+</script>

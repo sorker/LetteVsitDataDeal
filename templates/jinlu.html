@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>欢迎</title>
+    <link rel="stylesheet"  href="../static/css/a.css">
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        select{
+            width: 100px;
+            height: 20px;
+        }
+        .e1 a{
+            text-decoration: none;
+            color: #1b6d85;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <!--定义汉堡按钮-->
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <!--定义三条线-->
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="./First.html">智能筛选</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <!--<li class="active"><a href="#">图表分析 <span class="sr-only">(current)</span></a></li>-->
+                <li><a href="./Checkchart.html">图表分析</a></li>
+                <li><a href="./find.html">查询地方信息</a></li>
+                <li><a href="./input.html">投诉系统</a></li>
+                <li><a href="./department.html">相应部门</a></li>
+                <!--<li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">图表内容 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">4</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">5</a></li>
+                    </ul>
+                </li>-->
+            </ul>
+           <!-- <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="搜索某某地方">
+                </div>
+                <button type="submit" class="btn btn-default">搜索</button>
+            </form>-->
+            <ul class="nav navbar-nav navbar-right">
+                <!--<li><a href="#">图表分析</a></li>-->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">关于我们<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">加入我们</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">4</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+        </div>
+        <div class="row">
+            <div class="col-md-6 f_one">
+                <div class="container-fluid ">
+                    <div class="row f_second">
+                        <div class="c3"></div>
+                        <p>欢迎来到智能筛选系统</p>
+                        <p>请确认你的信息</p>
+                        <div class="c1"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 d1">
+                            <input type="text" placeholder="请输入邮箱">
+                        </div>
+                        <div class="col-md-4 d2">
+                            <input type="password" placeholder="请输入密码">
+                        </div>
+                        <div class="col-md-4 d3">
+                            <input type="button" value="免费注册">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="c2"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-6 d4">
+                <h1>
+                    <img src="../static/img/p1.png">
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="c1"></div>
+            <div class="container-fluid d6">
+                <div class="row">
+                    <div class="c4"></div>
+                    <h1 class="e1"><a href="./Checkchart.html">欢迎来到图表查看</a></h1>
+                    <div class="c4"></div>
+                </div>
+                <div class="row">
+                        <div class="d5" id="d5">
+
+                        </div>
+                    <div class="c3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="c1"></div>
+            <div class="container-fluid d6">
+                <div class="row">
+                    <div class="c4"></div>
+                    <h1 class="e1"><a href="./find.html">欢迎来到表格查看</a></h1>
+                    <div class="c4"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 d10" >
+                        <p><label for="name">名字:</label><input type="text" id="name" placeholder="请输入名字"></p>
+                        <p><label for="address">地址:</label><input type="text" id="address" placeholder="请输入地址"></p>
+                        <p><label for="phone">电话:</label><input type="text" id="phone" placeholder="请输入电话"></p>
+                        <p>
+                            <input type="button" value="添加" id="add">
+                        </p>
+                        <div class="c1"></div>
+                        <div class="c1"></div>
+                        <div class="c1"></div>
+                         <div class="c1"></div>
+                    </div>
+                    <div class="col-md-8">
+                         <table class="table table-hover " id="table">
+                             <caption>我的表格</caption>
+                             <thead>
+                             <tr class="warning">
+                                    <td>名字</td>
+                                    <td>地址</td>
+                                    <td>电话</td>
+                                    <td>开始</td>
+                                </tr>
+                             </thead>
+                             <tbody>
+                             <tr>
+                                 <td>名字</td>
+                                 <td>地址</td>
+                                 <td>电话</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             <tr>
+                                 <td>名字</td>
+                                 <td>地址</td>
+                                 <td>电话</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             <tr>
+                                 <td>名字</td>
+                                 <td>地址</td>
+                                 <td>电话</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             <tr>
+                                 <td>名字</td>
+                                 <td>地址</td>
+                                 <td>电话</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             <tr>
+                                 <td>名字</td>
+                                 <td>地址</td>
+                                 <td>电话</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             <tr>
+                                 <td>名字</td>
+                                 <td>地址</td>
+                                 <td>电话</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             <tr>
+                                 <td>名字</td>
+                                 <td>地址</td>
+                                 <td>电话</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             <tr>
+                                 <td>名字</td>
+                                 <td>地址</td>
+                                 <td>电话</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             <tr>
+                                 <td>你好</td>
+                                 <td>你好</td>
+                                 <td>你好</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             <tr>
+                                 <td>你好</td>
+                                 <td>你好</td>
+                                 <td>你好</td>
+                                 <td><a href="javascript:void(0);" onclick="delTr(this);">删除</a></td>
+                             </tr>
+                             </tbody>
+                             <tfoot>
+                                    <tr>
+                                        <td>结束</td>
+                                        <td>结束</td>
+                                        <td>结束</td>
+                                        <td>结束</td>
+                                    </tr>
+                             </tfoot>
+                            </table>
+                    </div>
+                </div>
+                 <div class="c3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row d9">
+            <div class="col-md-3">
+                <ul>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <ul>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <ul>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <ul>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                    <li><a>你好你好</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script>
+       function delTr(obj) {
+        var table = obj.parentNode.parentNode.parentNode;
+        var tr = obj.parentNode.parentNode;
+        table.removeChild(tr);
+
+    }
+       var ad = document.getElementById("add");
+       ad.onclick=function () {
+           var name = document.getElementById("name").value;
+           var address = document.getElementById("address").value;
+           var phone = document.getElementById("phone").value;
+           var table = document.getElementById("table");
+            table.innerHTML +=" <tr>\n" +
+            "        <td>"+name+"</td>\n" +
+            "        <td>"+address+"</td>\n" +
+            "        <td>"+phone+"</td>\n" +
+            "        <td><a href=\"javascript:void(0);\" onclick=\"delTr(this);\">删除</a></td>\n" +
+            "    </tr>\n"
+       }
+</script>
+</html>
+<script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../static/js/npm.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/jquery-3.2.1.min.js"></script>
+<script src="../static/js/echarts.js"></script>
+<script src="../static/js/d5.js"></script>

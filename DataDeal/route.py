@@ -5,15 +5,47 @@ from django.http import JsonResponse
 # Create your views here.
 
 
-def GetTest(request):
+def Checkchart(request):
     context = {'b': 'a'}
     return render(request, 'index.html', context)
 
 
-def GetTestasd(request):
-    return JsonResponse({'b': '123'})
+def department(request):
+    context = {'b': 'a'}
+    return render(request, 'index.html', context)
 
 
-def Show(request):
-    return render(request, 'First.html')
+def find(request):
+    context = {'b': 'a'}
+    return render(request, 'index.html', context)
+
+
+def First(request):
+    context = {'b': 'a'}
+    return render(request, 'index.html', context)
+
+
+def input(request):
+    context = {'b': 'a'}
+    return render(request, 'index.html', context)
+
+
+def jinlu(request):
+    context = {'b': 'a'}
+    return render(request, 'index.html', context)
+
+
+def test(request):
+    context = {'b': 'a'}
+    return render(request, 'index.html', context)
+
+
+def test2(request):
+    context = {'b': 'a'}
+    return render(request, 'index.html', context)
+
+
+def xuandepartmetn(request):
+    context = {'b': 'a'}
+    return render(request, 'index.html', context)
 

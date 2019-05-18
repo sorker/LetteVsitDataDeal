@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询相关地址资料</title>
+     <link rel="stylesheet" href="../static/css/b.css">
+</head>
+<body>
+<div class="tijiao">
+    <span>欢迎来到查询系统</span>
+    <fieldset>
+        <form action="/tsxs/servletdemo1" method="post">
+            <label for="addr-show">您选择的是：
+                <input type="text" value="" id="addr-show">
+            </label>
+            <br/>
+            <!--省份选择-->
+            <select id="prov"  name="prov" ><!--onchange="showCity(this)"-->
+                <option>=请选择省份=</option>
+                <option>浙江省</option>
+            </select>
+            <!--城市选择-->
+            <select id="city"  name="city" ><!--onchange="showCountry(this)"-->
+                <option>=请选择城市=</option>
+            </select>
+            <!--县区选择-->
+            <select id="country"  name="country" ><!--onchange="selecCountry(this)"-->
+                <option>=请选择县区=</option>
+            </select>
+            <button type="button" class="btn"  id="button-show">确定</button><!--onClick="showAddr()"-->
+        </form>
+    </fieldset>
+</div>
+<div class="tab">
+<table>
+    <thead>
+    <tr>
+        <th>标题</th>
+        <th>事件</th>
+        <th>管理部门</th>
+        <th>时间</th>
+        <th>移交部门</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot>
+        <tr height="30px"></tr>
+    </tfoot>
+</table>
+</div>
+</body>
+<!--<script src="../static/js/city.js"></script>-->
+<!--<script src="../static/js/method.js"></script>-->
+<script src="../static/js/jquery-3.4.0.js"></script>
+<script src="../static/js/getcity.js"></script>
+<!--<script src="../static/js/style.js"></script>-->
+</html>

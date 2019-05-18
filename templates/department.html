@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../static/css/department.css">
+</head>
+<body>
+    <h1>欢迎来到教育部</h1>
+    <!--导航栏-->
+    <div class="nav">
+        <ul>
+            <li id="complaints">投诉</li>
+            <li id="query">查询</li>
+        </ul>
+    </div>
+    <!--主要内容-->
+    <div class="banner">
+        <div class="d_form" id="d_form">
+            <form action="/tsxs/getinput" method="post">
+                <ul>
+                    <li>
+                        <span>城市</span>
+                        <input type="text" name="city" id="city">
+                    </li>
+                    <li>
+                        <span>区县</span>
+                        <input type="text" name="country" id="country">
+                    </li>
+                </ul>
+                <div class="input_text">
+                    <p>主题:<textarea rows="2" cols="50" name="title" id="title"></textarea></p>
+                    <p>内容:<textarea rows="29" cols="100" name="content" id="content"></textarea></p>
+                    <input type="button" value="提交" name ="submit" id="submit">
+                </div>
+            </form>
+        </div>
+        <div class="d_table" id="d_table">
+            <table>
+                <caption>查看部门投诉信息</caption>
+                <!--头部-->
+                <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>事件</th>
+                        <th>管理部门</th>
+                        <th>时间</th>
+                        <th>反馈</th>
+                    </tr>
+                </thead>
+                <!--中部-->
+                <tbody>
+                </tbody>
+                <!--中部-->
+                <tfoot>
+                </tfoot>
+            </table>
+            <div class="d_input">
+                <input type="button" value="查询" id="querymessage">
+                <input type="button" value="上一页" id="last">
+                <input type="button" value="下一页" id="next">
+                <input type="text" id="text">
+                <input type="button" value="跳转" id="goto">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<!--工具包-->
+<script type="text/javascript" src="../static/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+<!--自己定义的样式-->
+<script src="../static/js/department.js"></script>
+<script src="../static/js/submitinput.js"></script>

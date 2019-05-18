@@ -1,0 +1,44 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.c1{
+    height: 40px;
+    padding-top: 10px;
+    padding-left: 300px;
+    font-size: 30px;
+}
+p{
+    margin: 15px;
+}
+ul{
+    list-style: none;
+    height: 50px;
+    width: 550px;
+    margin: 0px auto;
+    text-align: center;
+}
+ul li{
+    float: left;
+    margin-top: 15px;
+    margin-right: 30px;
+    line-height: 50px;
+}
+.input_text{
+    width: 708px;
+    height: 490px;
+    margin: 50px auto 10px;
+    position: relative;
+}
+textarea{
+    position: absolute;
+}
+input[type="button"]{
+    border: 1px solid red;
+    display: block;
+    width: 100px;
+    height: 20px;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+}

@@ -1,0 +1,96 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+h1{
+    margin-left:300px;
+}
+ul{
+    list-style: none;
+}
+ul li{
+    cursor: pointer;
+}
+/**
+导航栏
+ */
+.nav{
+    width: 300px;
+    height: 40px;
+    margin: 0 auto;
+}
+.nav ul li{
+    border: 1px solid red;
+    float: left;
+    width: 148px;
+    height: 40px;
+    text-align: center;
+    background-color: #0A89E2;
+    line-height: 40px;
+}
+/**
+    内容框
+*/
+.banner{
+    border: 1px solid red;
+    width: 1020px;
+    height: 560px;
+    margin: 10px auto 0;
+    position: relative;
+}
+/**
+    表单
+ */
+.banner .d_form{
+    display: none;
+    position: absolute;
+    width: 1020px;
+    height: 560px;
+}
+.banner .d_form form{
+    border: 1px solid red;
+    width: 1000px;
+    height: 550px;
+    margin: 10px auto 0;
+}
+.banner .d_form form input[type="button"]{
+    position: absolute;
+    left: 59%;
+    width: 100px;
+    height: 30px;
+}
+/**
+表格
+ */
+.banner .d_table{
+    display: none;
+    position: absolute;
+    width: 1020px;
+    height: 560px;
+}
+.banner .d_table table{
+     display: block;
+     border: 1px solid red;
+     width: 1000px;
+     height:  500px;
+     margin: 10px auto;
+}
+.banner .d_table th,td{
+    width: 200px;
+    text-align: center;
+    border-bottom: 1px solid white;
+}
+.banner .d_table td div {
+    overflow-y: auto;
+    height: 70px;
+}
+.banner .d_table .d_input{
+ /*   border: 1px solid red;*/
+    width: 600px;
+    height: 30px;
+    margin: 5px auto;
+}
+.banner .d_input input[type="button"]{
+    width: 100px;
+    height: 30px;
+}
